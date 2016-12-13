@@ -7,6 +7,6 @@ import net.the_sinner.unn4m3d.filecheck.FileInfo
  */
 data class GameData(
         val username : String,
-        val session : String,
-        val files : Map<String, FileInfo>
+        val sessionId : String,
+        val accessToken : String
 )

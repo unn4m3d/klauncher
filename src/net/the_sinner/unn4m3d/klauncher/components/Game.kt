@@ -52,7 +52,7 @@ class Game(val data : GameData) : JFrame(){
         }
 
         val username = data.username
-        val sessionId = Crypt.xorencode(data.session,sett.pkey)
+        val sessionId = Crypt.xorencode(data.sessionId,sett.pkey)
 
         if(old) {
 
@@ -126,7 +126,7 @@ class Game(val data : GameData) : JFrame(){
                 params.add("--accessToken")
                 params.add(Crypt.b64encode(sessionId))
                 params.add("--uuid")
-                params.add(Crypt.b64encode(sessionId))
+                params.add(Crypt.b64encode(data.accessToken))
 
                 params.add("--userProperties")
                 params.add("{}")
