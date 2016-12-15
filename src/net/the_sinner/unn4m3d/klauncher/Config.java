@@ -7,4 +7,5 @@ public class Config {
     public static final String API_URL = "http://localhost:3000/";
     public static final String PROTECTION_KEY = "Test key";
     public static final String VERSION = "Test version";
+    public static final String APP_FOLDER = ".the_sinner_reborn";
 }

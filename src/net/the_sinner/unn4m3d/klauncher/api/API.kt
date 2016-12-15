@@ -14,6 +14,12 @@ class API(val url : String) {
 
     fun query(path : String, params : Map<String,String>) =  get("$url$path",params = params).jsonObject
 
+    protected fun throw_ex(resp : JSONObject)
+    {
+        if(resp.has("error") && resp["error"] != null)
+            throw APIException(resp.optString("error","Error"),resp.optString("errorType","unknown"))
+    }
+
     @Throws(APIException::class)
     fun auth(username : String, password : String, version : String) : SessionData
     {
@@ -23,8 +29,7 @@ class API(val url : String) {
                 "version"  to version
         ))
 
-        if(resp["error"] != null)
-            throw APIException(resp.optString("error","Error"),resp.optString("errorType","unknown"))
+        throw_ex(resp)
 
         return SessionData(resp["username"].toString(),resp["sessionId"].toString(),resp["accessToken"].toString())
     }
@@ -34,18 +39,17 @@ class API(val url : String) {
     {
         val resp = query("api/servers",HashMap<String,String>())
 
-        if(resp["error"] != null)
-            throw APIException(resp.optString("error","Error"),resp.optString("errorType","unknown"))
+        throw_ex(resp)
 
         val servers = resp.getJSONArray("servers")
         return servers.toList().map {
-            val obj = it as JSONObject
+            val obj = it as Map<String,Any>
             ShortServerData(
-                    name = obj.optString("name","Default"),
-                    shortName = obj.optString("shortName","default"),
-                    version = obj.getString("version"),
-                    ip = obj.getString("ip"),
-                    port = obj.getInt("port")
+                    name = obj["name"].toString(),
+                    shortName = obj["shortName"].toString(),
+                    version = obj["version"].toString(),
+                    ip = obj["ip"].toString(),
+                    port = obj["port"] as Int
             )
         }
     }
@@ -54,8 +58,7 @@ class API(val url : String) {
     fun server(name : String) : ServerData
     {
         val resp = query("api/server", mapOf("name" to name))
-        if(resp["error"] != null)
-            throw APIException(resp.optString("error","Error"),resp.optString("errorType","unknown"))
+        throw_ex(resp)
 
         var sd = ServerData(
                 name = resp.optString("name","Default"),
@@ -84,18 +87,17 @@ class API(val url : String) {
     @Throws(APIException::class)
     fun files(client : String, all : Boolean) : FilesData {
         val resp = query("api/files", mapOf("client" to client, "pretty" to "yes", "all" to all.toString()))
-        if (resp["error"] != null)
-            throw APIException(resp.optString("error", "Error"), resp.optString("errorType", "unknown"))
+        throw_ex(resp)
 
         return FilesData(
                 dir = resp.optString("dir", "/public/clients"),
                 fileinfo = resp.getJSONArray("files").toList().map {
-                    val obj = it as JSONObject
+                    val obj = it as Map<String,String?>
                     FileInfo(
-                            name = obj.getString("name"),
-                            size = obj.getLong("size"),
-                            sha256 = obj.getString("sha256"),
-                            sha512 = obj.getString("sha512")
+                            name = obj["name"]!!,
+                            size = obj["size"]!!.toLong(),
+                            sha256 = obj["sha256"]!!,
+                            sha512 = obj["sha512"]!!
                     )
                 }
         )

@@ -1,7 +1,9 @@
 package net.the_sinner.unn4m3d.klauncher
 
 import net.the_sinner.unn4m3d.klauncher.api.API
-import net.the_sinner.unn4m3d.klauncher.gui.MainForm
+import net.the_sinner.unn4m3d.klauncher.gui.MainApp
+
+//import net.the_sinner.unn4m3d.klauncher.gui.MainForm
 
 //import net.the_sinner.unn4m3d.klauncher.gui.MainForm
 
@@ -19,6 +21,7 @@ fun main(args : Array<String>) {
     } catch(e : Exception) {
         e.printStackTrace()
     }*/
-    val api = API(Config.API_URL)
-    val form = MainForm(api)
+   // val api = API(Config.API_URL)
+    //val form = MainForm(api)
+    MainApp.main(args)
 }
