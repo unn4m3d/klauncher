@@ -3,13 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="5eb8d3b4-a904-4c28-b7ef-aad065c0ab29" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/klauncher/net/the_sinner/unn4m3d/klauncher/MainClassKt$main$1.class" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/klauncher/META-INF/klauncher.kotlin_module" afterPath="$PROJECT_DIR$/out/production/klauncher/META-INF/klauncher.kotlin_module" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/klauncher/net/the_sinner/unn4m3d/klauncher/MainClassKt.class" afterPath="$PROJECT_DIR$/out/production/klauncher/net/the_sinner/unn4m3d/klauncher/MainClassKt.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/klauncher/net/the_sinner/unn4m3d/klauncher/components/Game.class" afterPath="$PROJECT_DIR$/out/production/klauncher/net/the_sinner/unn4m3d/klauncher/components/Game.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/klauncher/net/the_sinner/unn4m3d/klauncher/components/GameData.class" afterPath="$PROJECT_DIR$/out/production/klauncher/net/the_sinner/unn4m3d/klauncher/components/GameData.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/LogMessageCell.fxml" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/LogMessageCell.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/LogMessageController.java" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/LogMessageController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainController.java" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/UpdaterController.java" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/UpdaterController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -67,11 +66,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
-              <caret line="1" column="4" lean-forward="false" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
+            <state relative-caret-position="36">
+              <caret line="2" column="1" lean-forward="false" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -121,7 +120,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LogMessageCell.fxml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LogMessageCell.fxml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/LogMessageCell.fxml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
@@ -185,7 +184,6 @@
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/MainCall.java" />
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/GameData.kt" />
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/Example.form" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/api/APIResponse.kt" />
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/api/ShortServerData.kt" />
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/api/SessionData.kt" />
@@ -211,6 +209,7 @@
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/UpdaterController.java" />
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainController.java" />
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/LogMessageController.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -1073,14 +1072,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1" column="4" lean-forward="false" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainForm.fxml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
@@ -1166,6 +1157,14 @@
       </provider>
       <provider editor-type-id="JavaFX-Scene-Builder">
         <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="1" lean-forward="false" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+          <folding />
+        </state>
       </provider>
     </entry>
   </component>
