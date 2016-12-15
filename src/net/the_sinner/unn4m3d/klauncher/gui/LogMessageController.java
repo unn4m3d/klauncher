@@ -34,6 +34,7 @@ public class LogMessageController {
     public LogMessageController()
     {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("LogMessageCell.fxml"));
+        System.out.println("Loaded view of LMC");
         loader.setController(this);
         try {
             loader.load();
@@ -41,6 +42,8 @@ public class LogMessageController {
             e.printStackTrace();
         }
     }
+
+
 
     public void setMessage(LogMessage m)
     {

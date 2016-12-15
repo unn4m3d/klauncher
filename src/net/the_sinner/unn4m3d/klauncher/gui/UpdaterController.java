@@ -28,6 +28,7 @@ public class UpdaterController {
     public void initialize()
     {
         logView.setCellFactory((ListView<LogMessage> lw) -> new LogMessageCell());
+        println(Level.WARNING,"Hello!");
     }
 
     private void println(LogMessage m)
