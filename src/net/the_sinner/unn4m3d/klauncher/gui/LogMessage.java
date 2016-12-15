@@ -8,7 +8,7 @@ import java.util.logging.Level;
 public class LogMessage {
     public Level level;
     public String message;
-    public Exception inner;
+    public Exception inner = null;
 
     public LogMessage(Level l, String message)
     {
@@ -18,7 +18,7 @@ public class LogMessage {
 
     public LogMessage(Level l, String message, Exception inner)
     {
-        super(l,message);
+        this(l,message);
         this.inner = inner;
     }
 }
