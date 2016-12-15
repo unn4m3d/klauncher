@@ -9,10 +9,12 @@ import net.the_sinner.unn4m3d.klauncher.components.Settings
 import java.io.File
 import java.util.*
 import khttp.get
+import net.the_sinner.unn4m3d.klauncher.gui.MainForm
+
 //import net.the_sinner.unn4m3d.klauncher.gui.MainForm
 
 fun main(args : Array<String>) {
-    val gameDir = File("/home/unn4m3d/.tstest/thesinner")
+    /*val gameDir = File("/home/unn4m3d/.tstest/thesinner")
     val settings = Settings(640, 480, "test key", "Minecraft unn4m3d", false, File("/home/unn4m3d/.tstest/").absolutePath, "1.7.10")
     val data = GameData("unn4m3d", "0123456789ABCDEF", "aaaa-aaaa-aa-aaa")
 
@@ -23,5 +25,6 @@ fun main(args : Array<String>) {
         }
     } catch(e : Exception) {
         e.printStackTrace()
-    }
+    }*/
+    val form = MainForm()
 }
