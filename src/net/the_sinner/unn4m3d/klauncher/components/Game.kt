@@ -126,7 +126,7 @@ class Game(val data : GameData) : JFrame(){
                 params.add("--accessToken")
                 params.add(Crypt.b64encode(sessionId))
                 params.add("--uuid")
-                params.add(Crypt.b64encode(data.accessToken))
+                params.add(Crypt.b64encode(Crypt.xorencode(data.accessToken,sett.pkey)))
 
                 params.add("--userProperties")
                 params.add("{}")

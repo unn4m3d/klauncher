@@ -14,6 +14,7 @@ class API(val url : String) {
 
     fun query(path : String, params : Map<String,String>) =  get("$url$path",params = params).jsonObject
 
+    @Throws(APIException::class)
     fun auth(username : String, password : String, version : String) : SessionData
     {
         val resp = query("api/auth", mapOf(
@@ -28,6 +29,7 @@ class API(val url : String) {
         return SessionData(resp["username"].toString(),resp["sessionId"].toString(),resp["accessToken"].toString())
     }
 
+    @Throws(APIException::class)
     fun servers() : List<ShortServerData>
     {
         val resp = query("api/servers",HashMap<String,String>())
@@ -48,6 +50,7 @@ class API(val url : String) {
         }
     }
 
+    @Throws(APIException::class)
     fun server(name : String) : ServerData
     {
         val resp = query("api/server", mapOf("name" to name))
@@ -78,14 +81,14 @@ class API(val url : String) {
 
     fun launcher(platform : String) = url + get("${url}api/launcher",params=mapOf("platform" to platform)).text
 
-    fun files(client : String, all : Boolean) : FilesData
-    {
+    @Throws(APIException::class)
+    fun files(client : String, all : Boolean) : FilesData {
         val resp = query("api/files", mapOf("client" to client, "pretty" to "yes", "all" to all.toString()))
-        if(resp["error"] != null)
-            throw APIException(resp.optString("error","Error"),resp.optString("errorType","unknown"))
+        if (resp["error"] != null)
+            throw APIException(resp.optString("error", "Error"), resp.optString("errorType", "unknown"))
 
         return FilesData(
-                dir = resp.optString("dir","/public/clients"),
+                dir = resp.optString("dir", "/public/clients"),
                 fileinfo = resp.getJSONArray("files").toList().map {
                     val obj = it as JSONObject
                     FileInfo(
