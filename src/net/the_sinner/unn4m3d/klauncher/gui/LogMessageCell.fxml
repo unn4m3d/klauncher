@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<TitledPane fx:id="mainPane" animated="false" collapsible="false" expanded="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="191.0" prefWidth="601.0" text="untitled" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="net.the_sinner.unn4m3d.klauncher.gui.LogMessageController">
+   <content>
+      <ListView fx:id="exceptionView" prefHeight="200.0" prefWidth="200.0" />
+   </content>
+</TitledPane>

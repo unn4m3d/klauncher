@@ -3,11 +3,13 @@ package net.the_sinner.unn4m3d.klauncher.gui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
 import net.the_sinner.unn4m3d.klauncher.components.StackTraceConverterKt;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -29,6 +31,17 @@ public class LogMessageController {
         return "rgb(" + c.getRed() + "," + c.getGreen() + "," + c.getBlue() + ")";
     }
 
+    public LogMessageController()
+    {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("LogMessageCell.fxml"));
+        loader.setController(this);
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setMessage(LogMessage m)
     {
         message = m;
@@ -48,5 +61,11 @@ public class LogMessageController {
                 break;
         }
         mainPane.setStyle("-fx-inner-color : " + colorToRGB(color) + ";");
+        mainPane.setText(m.message);
+    }
+
+    public TitledPane getView()
+    {
+        return mainPane;
     }
 }
