@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
+import net.the_sinner.unn4m3d.klauncher.api.SessionData;
 
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -29,6 +30,11 @@ public class UpdaterController {
     {
         logView.setCellFactory((ListView<LogMessage> lw) -> new LogMessageCell());
         println(Level.WARNING,"Hello!");
+    }
+
+    public void setData(SessionData sd, String serv)
+    {
+        // TODO
     }
 
     private void println(LogMessage m)
