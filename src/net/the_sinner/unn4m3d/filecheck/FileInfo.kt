@@ -60,11 +60,6 @@ data class FileInfo(val name : String, val size : Long, val sha256 : String?, va
 }
 
 fun fromHash(map : HashMap<String,String>) : FileInfo = FileInfo(map["name"].toString(),map["size"].toString().toLong(),map["sha256"],map["sha512"])
-fun fromJson(j : String) : Map<String,FileInfo>
-{
-    val g = Gson()
-    return g.fromJson<Map<String,FileInfo>>(j)
-}
 
 fun fromFile(path : String) : FileInfo
 {
