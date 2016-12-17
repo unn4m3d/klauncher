@@ -1,4 +1,4 @@
-klauncher
+KLauncher
 ==
 
-Launcher partially written in Kotlin [WIP]  
+Minecraft Launcher partially written in Kotlin [WIP]  
