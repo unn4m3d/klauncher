@@ -7,16 +7,20 @@ import java.util.*
  * Created by unn4m3d on 11.12.16.
  */
 
-class FileChecker(val path : String, val files : HashMap<String,FileInfo>){
-    fun check(ignore : Regex, callback : (State,Exception?,String?) -> Void) : ArrayList<FileResult>
+class FileChecker(val path : String, val files : Map<String,FileInfo>){
+    fun check(ignore : Regex, callback : (State,Exception?,String?) -> Unit) : ArrayList<FileResult>
     {
         callback(State.START,null,"Starting...")
         val ftw = File(path).walkTopDown()
         var _files = HashMap<String,String>()
         for(file in ftw) {
-            val name = file.absolutePath.replace(path,"")
-            callback(State.LISTING,null,"Adding file $name")
-            _files[name] = file.absolutePath
+            val name = file.absolutePath.replace(path, "")
+            if((ignore.toString().isEmpty() || !name.matches(ignore)) && !file.isDirectory) {
+                callback(State.LISTING, null, "Adding file $name")
+                _files[name] = file.absolutePath
+            } else {
+                callback(State.LISTING, null, "Skipping file $name")
+            }
         }
 
         var result = ArrayList<FileResult>()
@@ -30,7 +34,7 @@ class FileChecker(val path : String, val files : HashMap<String,FileInfo>){
                 if(cr) {
                     callback(State.SUCCESS,null,"File ${_files[pair.key]} passed")
                     result.add(FileResult(pair.key,FileState.PRESENT))
-                } else {
+                } else{
                     callback(State.FAILURE,null,s)
                     result.add(FileResult(pair.key,FileState.CORRUPT))
                 }
@@ -46,7 +50,8 @@ class FileChecker(val path : String, val files : HashMap<String,FileInfo>){
         }
 
         for(pair in _files) {
-            if(!pair.key.matches(ignore) && !File(pair.value).isDirectory) result.add(FileResult(pair.key,FileState.UNWANTED))
+            if(ignore.toString().isEmpty() || !pair.key.matches(ignore) && !File(pair.value).isDirectory)
+                result.add(FileResult(pair.key,FileState.UNWANTED))
         }
 
         callback(State.FINISH,null,"Finished")

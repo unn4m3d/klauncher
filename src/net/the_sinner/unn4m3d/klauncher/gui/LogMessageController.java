@@ -45,7 +45,7 @@ public class LogMessageController {
 
 
 
-    public void setMessage(LogMessage m)
+    public void setMessage(LogMessage m, ListView<LogMessage> lv)
     {
         message = m;
         if(m.inner != null) {
@@ -65,6 +65,10 @@ public class LogMessageController {
         }
         mainPane.setStyle("-fx-inner-color : " + colorToRGB(color) + ";");
         mainPane.setText(m.message);
+        if(m.inner == null)
+            mainPane.setPrefSize(lv.getWidth(),mainPane.getMinHeight());
+        else
+            mainPane.setExpanded(false);
     }
 
     public TitledPane getView()

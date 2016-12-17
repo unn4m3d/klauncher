@@ -140,6 +140,7 @@ class Game(val data : GameData) : JFrame(){
                 params.add(sessionId)
             }
 
+            callback("Continuing...")
             params.add("--username")
             params.add(username)
             params.add("--version")
@@ -157,6 +158,7 @@ class Game(val data : GameData) : JFrame(){
             var tweaked = false
 
             try {
+                callback("Looking for LiteLoader...")
                 cl.loadClass("com.mumfrey.liteloader.launch.LiteLoaderTweaker")
                 params.add("--tweakClass")
                 params.add("com.mumfrey.liteloader.launch.LiteLoaderTweaker")
@@ -166,14 +168,17 @@ class Game(val data : GameData) : JFrame(){
             }
 
             try {
+                callback("Looking for FML Tweaker...")
                 cl.loadClass("cpw.mods.fml.common.launcher.FMLTweaker")
                 params.add("--tweakClass")
                 params.add("cpw.mods.fml.common.launcher.FMLTweaker")
                 tweaked = true
                 callback("Detected FML")
             } catch (e: ClassNotFoundException) {
+                callback("FML Tweaker not found")
             }
 
+            callback("Loading...")
             val start = cl.loadClass(if(tweaked){"net.minecraft.launchwrapper.Launch"}else{"net.minecraft.client.main.Main"})
 
             val main = start.getMethod("main",Array<String>(0){""}.javaClass)

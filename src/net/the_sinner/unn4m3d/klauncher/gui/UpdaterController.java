@@ -1,12 +1,25 @@
 package net.the_sinner.unn4m3d.klauncher.gui;
 
+import com.sun.javafx.tk.Toolkit;
+import com.sun.javaws.progress.Progress;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
+import kotlin.Unit;
+import net.the_sinner.unn4m3d.klauncher.Config;
 import net.the_sinner.unn4m3d.klauncher.api.SessionData;
+import net.the_sinner.unn4m3d.klauncher.components.*;
 
+import javax.swing.event.DocumentEvent;
+
+import static net.the_sinner.unn4m3d.klauncher.components.UtilsKt.*;
+
+import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
 
@@ -21,27 +34,94 @@ public class UpdaterController {
     private Label status;
 
     @FXML
-    private ListView<LogMessage> logView;
+    //private ListView<LogMessage> logView;
+    private ListView<String> logView;
 
-    private ObservableList<LogMessage> list = FXCollections.observableArrayList();
+    //private ObservableList<LogMessage> list = FXCollections.observableArrayList();
+    private ObservableList<String> list = FXCollections.observableArrayList();
 
-    @FXML
-    public void initialize()
+    private SessionData session;
+    private String server;
+    private String version;
+
+    public void _initialize()
     {
-        logView.setCellFactory((ListView<LogMessage> lw) -> new LogMessageCell());
-        println(Level.WARNING,"Hello!");
+        //logView.setCellFactory((ListView<LogMessage> lw) -> new LogMessageCell());
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return UpdaterKt.launchUpdater(
+                        fileJoin(getAppData(),Config.APP_FOLDER + File.separator + server),
+                        server,
+                        fileJoin(getAppData(), Config.APP_FOLDER + File.separator + "assets"),
+                        (l, m, e) -> {
+                            println(l, m, e);
+                            return Unit.INSTANCE;
+                        });
+            }
+        };
+
+        task.setOnRunning((e) -> {
+            progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
+        });
+
+        task.setOnSucceeded((e) -> {
+            boolean value = task.getValue();
+            if(value) {
+                Game game = new Game(new GameData(session.getUsername(),session.getSessionId(),session.getAccessToken()));
+                game.launch(
+                        fileJoin(getAppData(),Config.APP_FOLDER + File.separator + server).getAbsolutePath(),
+                        new Settings(
+                                640, 480,
+                                Config.PROTECTION_KEY,
+                                "Minecraft unn4m3d",
+                                false,
+                                fileJoin(getAppData(), Config.APP_FOLDER + File.separator + "assets").getAbsolutePath(),
+                                version
+                        ), (s) -> {
+                            println(Level.INFO,s);
+                            if(s.startsWith("!!! "))
+                            {
+                                progressBar.getScene().getWindow().hide();
+                            }
+                            return Unit.INSTANCE;
+                        });
+            }
+        });
+
+        task.setOnFailed((e) -> {
+            status.setText("ERROR! " + e.toString());
+            println(Level.ALL,e.toString());
+            Throwable thr = (Throwable)(e.getSource().exceptionProperty().get());
+            thr.printStackTrace();
+        });
+
+        new Thread(task).start();
+
     }
 
-    public void setData(SessionData sd, String serv)
+    public void setData(SessionData sd, String serv, String v)
     {
-        // TODO
+        println(Level.INFO, "Server is " + serv + " [" + v + "]");
+        session = sd;
+        server = serv;
+        version = v;
+
     }
 
     private void println(LogMessage m)
     {
-        list.addAll(m);
-        logView.setItems(list);
-        logView.scrollTo(list.size()-1);
+        Platform.runLater(() -> {
+            System.out.println(m.toString());
+            if(m.level != Level.OFF) {
+                list.addAll(m.toString());
+                logView.setItems(list);
+                logView.scrollTo(list.size() - 1);
+            }
+            status.setText(m.message);
+            if(m.inner != null)
+                m.inner.printStackTrace();
+        });
     }
 
     private void println(Level level, String message)

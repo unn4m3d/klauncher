@@ -92,14 +92,15 @@ class API(val url : String) {
         return FilesData(
                 dir = resp.optString("dir", "/public/clients"),
                 fileinfo = resp.getJSONArray("files").toList().map {
-                    val obj = it as Map<String,String?>
+                    val obj = it as Map<String,Any?>
                     FileInfo(
-                            name = obj["name"]!!,
-                            size = obj["size"]!!.toLong(),
-                            sha256 = obj["sha256"]!!,
-                            sha512 = obj["sha512"]!!
+                            name = obj["name"]!! as String,
+                            size = obj["size"]!!.toString().toLong(), // FIXME
+                            sha256 = obj["sha256"] as String?,
+                            sha512 = obj["sha512"] as String?
                     )
-                }
+                },
+                ignore = Regex(resp.optString("ignore",""))
         )
     }
 

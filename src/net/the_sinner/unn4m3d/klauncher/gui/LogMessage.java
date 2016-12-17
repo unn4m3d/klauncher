@@ -21,4 +21,10 @@ public class LogMessage {
         this(l,message);
         this.inner = inner;
     }
+
+    @Override
+    public String toString()
+    {
+        return "[" + level.toString() + "] " + message;
+    }
 }

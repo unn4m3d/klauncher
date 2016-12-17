@@ -16,7 +16,7 @@ public final class LogMessageCell extends ListCell<LogMessage> {
             setGraphic(null);
         else
         {
-            controller.setMessage(item);
+            controller.setMessage(item,this.getListView());
             setGraphic(pane);
         }
     }

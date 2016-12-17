@@ -7,5 +7,6 @@ import net.the_sinner.unn4m3d.filecheck.FileInfo
  */
 class FilesData(
         val dir : String,
-        val fileinfo : List<FileInfo>
+        val fileinfo : List<FileInfo>,
+        val ignore : Regex
 )

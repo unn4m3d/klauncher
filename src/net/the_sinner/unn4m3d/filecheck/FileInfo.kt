@@ -1,6 +1,6 @@
 package net.the_sinner.unn4m3d.filecheck
 
-import com.github.salomonbrys.kotson.fromJson
+//import com.github.salomonbrys.kotson.fromJson
 import com.google.gson.Gson
 import security.SHA256
 import security.SHA512
@@ -17,23 +17,23 @@ data class FileInfo(val name : String, val size : Long, val sha256 : String?, va
     {
         val info = File(path)
         if(size != info.length()) {
-            cb("Wrong size : ${info.length()}, not $size")
+            cb("Wrong size of $name : ${info.length()}, not $size")
             return false
         }
         val fis = FileInputStream(path)
 
         try {
             if(sha256 != null) {
-                val sum = SHA256.hash(fis).toHex()
-                if (sum != sha256) {
-                    cb("SHA256 failed : $sum, not $sha256")
+                val sum = SHA256.hash(fis).toHex().toLowerCase()
+                if (sum != sha256.toLowerCase()) {
+                    cb("SHA256 $name failed : $sum, not $sha256")
                     return false
                 }
             }
             if(sha512 != null) {
-                val sum = SHA512.hash(fis).toHex()
-                if (sum != sha512) {
-                    cb("SHA512 failed : $sum, not $sha512")
+                val sum = SHA512.hash(fis).toHex().toLowerCase()
+                if (sum != sha512.toLowerCase()) {
+                    cb("SHA512 $name failed : $sum, not $sha512")
                     return false
                 }
             }

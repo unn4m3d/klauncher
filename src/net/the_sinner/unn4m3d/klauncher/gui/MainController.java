@@ -76,11 +76,14 @@ public class MainController {
             SessionData data = api.auth(loginField.getText(),passwordField.getText(),Config.VERSION);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("UpdaterForm.fxml"));
             Parent root = loader.load();
-            ((UpdaterController)loader.getController()).setData(data,serverBox.getValue());
+            ShortServerData serv = servers.get(serverBox.getSelectionModel().getSelectedIndex());
+            UpdaterController ctrl = (UpdaterController)loader.getController();
+            ctrl.setData(data,serv.getShortName(),serv.getVersion());
             Stage stage = new Stage();
             stage.setTitle("KLauncher");
             stage.setScene(new Scene(root));
             stage.show();
+            ctrl._initialize();
             ((Node)evt.getSource()).getScene().getWindow().hide();
         } catch (APIException e) {
             statusLabel.setText("[" + e.getErrorType().toUpperCase() + "] " + e.getError());
