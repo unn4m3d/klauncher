@@ -108,8 +108,22 @@ fun size(l : Long) : String
     return if(i > 0){"$s ${pref[i-1]}B"}else{"$s B"}
 }
 
+fun downloadAssets(dir : File, cb: (Level,String,Exception?) -> Unit)
+{
+    dir.mkdirs()
+    val assets = API(Config.API_URL).assets()
+    for(asset in assets.files)
+    {
+        cb(Level.INFO, "Загрузка файла ${asset}", null)
+        downloadFile(dir,assets.dir, asset) { d: Long, t: Long ->
+            cb(Level.OFF,"Загрузка ${asset} (${size(d)}/${size(t)} ${d/t.toFloat()*100}%)", null)
+        }
+    }
+}
+
 fun launchUpdater(dir : File, server : String, assetsDir : File,cb: (Level,String,Exception?) -> Unit) : Boolean
 {
+    cb(Level.INFO, "CD ${dir.absolutePath} AD ${assetsDir.absolutePath}",null)
     cb(Level.INFO,"Проверка папки клиента",null)
     var b = true
     if(dir.exists())
@@ -134,6 +148,14 @@ fun launchUpdater(dir : File, server : String, assetsDir : File,cb: (Level,Strin
             cb(Level.WARNING, e.message.toString(), e)
             e.printStackTrace()
         }
+    }
+
+    try {
+        if (!assetsDir.exists()) downloadAssets(assetsDir, cb)
+    } catch (e : Exception) {
+        b = false
+        cb(Level.WARNING, e.message.toString(), e)
+        e.printStackTrace()
     }
     return b
 }

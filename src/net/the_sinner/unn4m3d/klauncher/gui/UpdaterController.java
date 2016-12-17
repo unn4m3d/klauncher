@@ -76,7 +76,7 @@ public class UpdaterController {
                                 Config.PROTECTION_KEY,
                                 "Minecraft unn4m3d",
                                 false,
-                                fileJoin(getAppData(), Config.APP_FOLDER + File.separator + "assets").getAbsolutePath(),
+                                fileJoin(getAppData(), Config.APP_FOLDER    ).getAbsolutePath(),
                                 version
                         ), (s) -> {
                             println(Level.INFO,s);

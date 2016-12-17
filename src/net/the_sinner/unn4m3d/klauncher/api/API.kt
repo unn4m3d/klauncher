@@ -104,4 +104,16 @@ class API(val url : String) {
         )
     }
 
+    @Throws(APIException::class)
+    fun assets() : AssetsData
+    {
+        val resp = query("api/assets",mapOf())
+        throw_ex(resp)
+
+        return AssetsData(
+                resp.optString("dir","assets"),
+                resp.getJSONArray("files").map{ it.toString() }
+        )
+    }
+
 }
