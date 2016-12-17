@@ -44,6 +44,7 @@ class LauncherConfig(val file : File)
 
     fun save()
     {
+        file.parentFile.mkdirs()
         file.writeText(data.toString())
     }
 

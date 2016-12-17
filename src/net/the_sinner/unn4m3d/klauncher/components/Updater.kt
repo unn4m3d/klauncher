@@ -19,24 +19,21 @@ fun downloadFile(dir : File, upDir : String, name : String, cb : (Long,Long) -> 
 {
     val r = get("${Config.API_URL}/$upDir/${encodeRPath(name)}",stream = true)
     val size = r.headers["Content-Length"].toString().toLong()
+    //val size = r.raw.available().toLong()
     cb(0,size)
     val f = File(dir.absolutePath + name)
-    println("[DOWNLOADING ${f.absolutePath} $size]")
+    //println("[DOWNLOADING ${f.absolutePath} $size]")
     f.parentFile.mkdirs()
+    if(f.exists()) f.delete()
     f.createNewFile()
-    val fis = FileOutputStream(f)
-    try {
-        var downloaded = 0L
-        for (chunk in r.contentIterator(1024)) {
-            downloaded += chunk.size
-            fis.write(chunk)
-            cb(downloaded, size)
-        }
-        println(downloaded)
-    } catch (e : Exception) {
-        e.printStackTrace()
-    } finally {
-        fis.close()
+    val str = r.raw
+    var downloaded = 0L
+    while(str.available() > 0)
+    {
+        val chk = str.readBytes(32768)
+        downloaded += chk.size
+        f.appendBytes(chk)
+        cb(downloaded,size)
     }
 
 }
@@ -123,6 +120,7 @@ fun launchUpdater(dir : File, server : String, assetsDir : File,cb: (Level,Strin
         }catch (e : Exception){
             b = false
             cb(Level.WARNING, e.message.toString() ,e)
+            e.printStackTrace()
         }
     }
     else
@@ -134,6 +132,7 @@ fun launchUpdater(dir : File, server : String, assetsDir : File,cb: (Level,Strin
         } catch ( e : Exception) {
             b = false
             cb(Level.WARNING, e.message.toString(), e)
+            e.printStackTrace()
         }
     }
     return b

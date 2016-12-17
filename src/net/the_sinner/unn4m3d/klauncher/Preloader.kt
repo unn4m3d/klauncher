@@ -10,8 +10,9 @@ import kotlin.system.exitProcess
 
 fun old_main(args : Array<String>)
 {
-    if(config.file.exists())
-        config.load()
+    if(!config.file.exists())
+        config.save()
+    config.load()
     config.setDefault("memory",1024)
     val memory = config.getOpt<Int>("memory",1024)
 
