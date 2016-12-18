@@ -17,6 +17,7 @@ import net.the_sinner.unn4m3d.klauncher.api.API;
 import net.the_sinner.unn4m3d.klauncher.api.APIException;
 import net.the_sinner.unn4m3d.klauncher.api.SessionData;
 import net.the_sinner.unn4m3d.klauncher.api.ShortServerData;
+import net.the_sinner.unn4m3d.klauncher.components.Settings;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -91,5 +92,24 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onSettings(MouseEvent evt)
+    {
+        FXMLLoader ldr = new FXMLLoader(getClass().getResource("SettingsForm.fxml"));
+        try {
+            Parent root = ldr.load();
+            SettingsController ctrl = (SettingsController)ldr.getController();
+            Node self = (Node)evt.getSource();
+            ctrl.setNode(self);
+            self.getScene().getWindow().hide();
+            Stage st = new Stage();
+            st.setTitle("Settings");
+            st.setScene(new Scene(root));
+            st.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

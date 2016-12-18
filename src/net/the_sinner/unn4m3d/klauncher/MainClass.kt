@@ -30,3 +30,4 @@ fun main(args : Array<String>) {
 }
 
 val config = LauncherConfig(getAppData().resolve(Config.APP_FOLDER).resolve("launcher.json"))
+var forceUpdate = false

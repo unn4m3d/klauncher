@@ -1,6 +1,7 @@
 package net.the_sinner.unn4m3d.klauncher.components
 
 import java.io.File
+import java.lang.management.ManagementFactory
 import java.net.URLEncoder
 
 /**
@@ -60,3 +61,14 @@ fun Byte.toHex() : String
 fun encodeRPath(path : String) = path.split("/").map{
     URLEncoder.encode(it)
 }.joinToString("/")
+
+fun ramSize() : Long
+{
+    try {
+        val bean = ManagementFactory.getOperatingSystemMXBean() as com.sun.management.OperatingSystemMXBean
+        return bean.totalPhysicalMemorySize
+    } catch (e : Exception) {
+        e.printStackTrace()
+        return 4096L * 1024 * 1024
+    }
+}
