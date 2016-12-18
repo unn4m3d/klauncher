@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -20,6 +21,7 @@ import javax.swing.event.DocumentEvent;
 import static net.the_sinner.unn4m3d.klauncher.components.UtilsKt.*;
 
 import java.io.File;
+import java.io.ObjectInput;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
 
@@ -65,27 +67,37 @@ public class UpdaterController {
             progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
         });
 
-        task.setOnSucceeded((e) -> {
+        task.setOnSucceeded((WorkerStateEvent e) -> {
             boolean value = task.getValue();
             if(value) {
-                Game game = new Game(new GameData(session.getUsername(),session.getSessionId(),session.getAccessToken()));
-                game.launch(
-                        fileJoin(getAppData(),Config.APP_FOLDER + File.separator + server).getAbsolutePath(),
-                        new Settings(
-                                640, 480,
-                                Config.PROTECTION_KEY,
-                                "Minecraft unn4m3d",
-                                false,
-                                fileJoin(getAppData(), Config.APP_FOLDER    ).getAbsolutePath(),
-                                version
-                        ), (s) -> {
-                            println(Level.INFO,s);
-                            if(s.startsWith("!!! "))
-                            {
-                                progressBar.getScene().getWindow().hide();
-                            }
-                            return Unit.INSTANCE;
-                        });
+                Task gtask = new Task() {
+                    @Override
+                    public Object call() {
+                        Game game = new Game(new GameData(session.getUsername(), session.getSessionId(), session.getAccessToken()));
+                        game.launch(
+                                fileJoin(getAppData(), Config.APP_FOLDER + File.separator + server).getAbsolutePath(),
+                                new Settings(
+                                        640, 480,
+                                        Config.PROTECTION_KEY,
+                                        "Minecraft unn4m3d",
+                                        false,
+                                        fileJoin(getAppData(), Config.APP_FOLDER).getAbsolutePath(),
+                                        version
+                                ), (s) -> {
+                                    println(Level.INFO, s);
+                                    if (s.startsWith("!!! ")) {
+                                        Platform.runLater(() ->
+                                                progressBar.getScene().getWindow().hide());
+                                        //System.out.println(s);
+                                        //System.exit(0);
+                                    }
+                                    return Unit.INSTANCE;
+                                });
+                        return null;
+                    }
+                };
+
+                new Thread(gtask).start();
             }
         });
 

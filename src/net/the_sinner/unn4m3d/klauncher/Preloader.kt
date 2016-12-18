@@ -1,5 +1,6 @@
 package net.the_sinner.unn4m3d.klauncher
 
+import net.the_sinner.unn4m3d.klauncher.components.getAppData
 import net.the_sinner.unn4m3d.klauncher.components.getPlatform
 import javax.swing.JOptionPane
 import kotlin.system.exitProcess
@@ -37,6 +38,10 @@ fun old_main(args : Array<String>)
     params.add(cname)
 
     var pb = ProcessBuilder(params)
+    val folder = getAppData().resolve(Config.APP_FOLDER)
+    if(!folder.exists())
+        folder.mkdirs()
+    pb.directory(folder)
     pb = pb.inheritIO()
 
     val proc = pb.start()
