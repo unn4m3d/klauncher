@@ -26,10 +26,15 @@ class LauncherConfig(val file : File)
 
     fun <T>getOpt(key : String, def : T) : T
     {
-        val value = this[key] as? T
-        if(value == null)
+        try {
+            val value = this[key] as? T
+            if (value == null)
+                return def
+            return value
+        } catch (e : Exception) {
+            e.printStackTrace()
             return def
-        return value
+        }
     }
 
     fun setDefault(key : String, value : Any)

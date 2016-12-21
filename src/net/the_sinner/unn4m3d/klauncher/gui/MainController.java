@@ -20,6 +20,7 @@ import net.the_sinner.unn4m3d.klauncher.api.APIException;
 import net.the_sinner.unn4m3d.klauncher.api.SessionData;
 import net.the_sinner.unn4m3d.klauncher.api.ShortServerData;
 import net.the_sinner.unn4m3d.klauncher.components.Settings;
+import net.the_sinner.unn4m3d.klauncher.components.UtilsKt;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -61,7 +62,7 @@ public class MainController {
                 passwordField.setText(
                         Crypt.decrypt(Crypt.b64decode(
                                 MainClassKt.getConfig().getOpt("password","")
-                        ),Config.PROTECTION_KEY)
+                        ),UtilsKt.padRight(Config.PROTECTION_KEY,16,'-'))
                 );
             }
 
@@ -91,7 +92,8 @@ public class MainController {
             if(MainClassKt.getConfig().<Boolean>getOpt("remember",false))
             {
                 MainClassKt.getConfig().set("password",
-                        Crypt.b64encode(Crypt.encrypt(passwordField.getText(),Config.PROTECTION_KEY)));
+                        Crypt.b64encode(Crypt.encrypt(passwordField.getText(),
+                                UtilsKt.padRight(Config.PROTECTION_KEY,16,'-'))));
             }
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("UpdaterForm.fxml"));

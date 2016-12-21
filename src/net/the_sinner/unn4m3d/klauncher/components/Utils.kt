@@ -72,3 +72,5 @@ fun ramSize() : Long
         return 4096L * 1024 * 1024
     }
 }
+
+fun padRight(s : String, i : Int, c : Char) = s.padEnd(i,c)
