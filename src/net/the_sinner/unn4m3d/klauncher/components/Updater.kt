@@ -121,11 +121,13 @@ fun downloadAssets(dir : File, cb: (Level,String,Exception?) -> Unit)
     }
 }
 
-fun launchUpdater(dir : File, server : String, assetsDir : File,cb: (Level,String,Exception?) -> Unit) : Boolean
+fun launchUpdater(dir : File, server : String, assetsDir : File, forceUpd: Boolean, cb: (Level,String,Exception?) -> Unit) : Boolean
 {
     cb(Level.INFO, "CD ${dir.absolutePath} AD ${assetsDir.absolutePath}",null)
     cb(Level.INFO,"Проверка папки клиента",null)
     var b = true
+    if(forceUpd)
+        dir.deleteRecursively()
     if(dir.exists())
     {
         try {

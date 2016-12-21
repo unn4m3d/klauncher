@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 import kotlin.Unit;
 import net.the_sinner.unn4m3d.klauncher.Config;
+import net.the_sinner.unn4m3d.klauncher.MainClassKt;
 import net.the_sinner.unn4m3d.klauncher.api.SessionData;
 import net.the_sinner.unn4m3d.klauncher.components.*;
 
@@ -56,6 +57,7 @@ public class UpdaterController {
                         fileJoin(getAppData(),Config.APP_FOLDER + File.separator + server),
                         server,
                         fileJoin(getAppData(), Config.APP_FOLDER + File.separator + "assets"),
+                        MainClassKt.getForceUpdate(),
                         (l, m, e) -> {
                             println(l, m, e);
                             return Unit.INSTANCE;
