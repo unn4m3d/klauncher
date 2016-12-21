@@ -12,7 +12,9 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import net.launcher.utils.Crypt;
 import net.the_sinner.unn4m3d.klauncher.Config;
+import net.the_sinner.unn4m3d.klauncher.MainClassKt;
 import net.the_sinner.unn4m3d.klauncher.api.API;
 import net.the_sinner.unn4m3d.klauncher.api.APIException;
 import net.the_sinner.unn4m3d.klauncher.api.SessionData;
@@ -53,6 +55,16 @@ public class MainController {
     public void initialize()
     {
         try {
+            if (
+                    MainClassKt.getConfig().getOpt("remember",false) &&
+                    MainClassKt.getConfig().getOpt("password", "") != "") {
+                passwordField.setText(
+                        Crypt.decrypt(Crypt.b64decode(
+                                MainClassKt.getConfig().getOpt("password","")
+                        ),Config.PROTECTION_KEY)
+                );
+            }
+
             servers = api.servers();
             serverBox.setItems(FXCollections.observableList(javaMap(servers,(ShortServerData s) -> s.getName())));
             serverBox.setValue(servers.get(0).getName());
@@ -75,6 +87,13 @@ public class MainController {
         System.out.println("onLogin");
         try {
             SessionData data = api.auth(loginField.getText(),passwordField.getText(),Config.VERSION);
+
+            if(MainClassKt.getConfig().<Boolean>getOpt("remember",false))
+            {
+                MainClassKt.getConfig().set("password",
+                        Crypt.b64encode(Crypt.encrypt(passwordField.getText(),Config.PROTECTION_KEY)));
+            }
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("UpdaterForm.fxml"));
             Parent root = loader.load();
             ShortServerData serv = servers.get(serverBox.getSelectionModel().getSelectedIndex());
