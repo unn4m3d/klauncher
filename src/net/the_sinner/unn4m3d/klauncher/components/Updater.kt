@@ -4,12 +4,10 @@ import net.the_sinner.unn4m3d.filecheck.FileChecker
 import net.the_sinner.unn4m3d.filecheck.FileState
 import net.the_sinner.unn4m3d.filecheck.State
 import net.the_sinner.unn4m3d.klauncher.Config
-import net.the_sinner.unn4m3d.klauncher.api.API
 import java.io.File
 import java.util.logging.Level
 import khttp.get
-import net.the_sinner.unn4m3d.filecheck.FileResult
-import java.io.FileOutputStream
+import net.the_sinner.unn4m3d.klauncher.api.apiInstance
 
 /**
  * Created by unn4m3d on 16.12.16.
@@ -42,7 +40,7 @@ fun downloadFile(dir : File, upDir : String, name : String, cb : (Long,Long) -> 
 fun checkClient(dir : File, sn : String, cb : (Level,String,Exception?) -> Unit)
 {
     cb(Level.INFO, "Загрузка информации...", null)
-    val info = API(Config.API_URL).files(sn,false)
+    val info = apiInstance.files(sn,false)
     cb(Level.INFO, "Загружена информация о ${info.fileinfo.size} файлах ",null)
     cb(Level.INFO, "Проверка файлов...",null)
     val checker = FileChecker(dir.absolutePath,info.fileinfo.map{it.name to it}.toMap())
@@ -77,6 +75,7 @@ fun checkClient(dir : File, sn : String, cb : (Level,String,Exception?) -> Unit)
                 cb(Level.WARNING,"Файл ${file.path} будет удален",null)
                 File(file.path).delete()
             }
+            else -> {}
         }
     }
 }
@@ -84,7 +83,7 @@ fun checkClient(dir : File, sn : String, cb : (Level,String,Exception?) -> Unit)
 fun downloadClient(dir : File, server : String, cb: (Level,String,Exception?) -> Unit)
 {
     cb(Level.INFO,"Получение списка файлов",null)
-    var files = API(Config.API_URL).files(server,true)
+    var files = apiInstance.files(server,true)
     cb(Level.INFO,"Список файлов получен", null)
     for(file in files.fileinfo)
     {
@@ -111,7 +110,7 @@ fun size(l : Long) : String
 fun downloadAssets(dir : File, cb: (Level,String,Exception?) -> Unit)
 {
     dir.mkdirs()
-    val assets = API(Config.API_URL).assets()
+    val assets = apiInstance.assets()
     for(asset in assets.files)
     {
         cb(Level.INFO, "Загрузка файла ${asset}", null)

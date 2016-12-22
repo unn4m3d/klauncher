@@ -1,25 +1,18 @@
 package net.the_sinner.unn4m3d.klauncher.gui;
 
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import net.launcher.utils.Crypt;
 import net.the_sinner.unn4m3d.klauncher.Config;
 import net.the_sinner.unn4m3d.klauncher.MainClassKt;
-import net.the_sinner.unn4m3d.klauncher.api.API;
-import net.the_sinner.unn4m3d.klauncher.api.APIException;
-import net.the_sinner.unn4m3d.klauncher.api.SessionData;
-import net.the_sinner.unn4m3d.klauncher.api.ShortServerData;
-import net.the_sinner.unn4m3d.klauncher.components.Settings;
+import net.the_sinner.unn4m3d.klauncher.api.*;
+import net.the_sinner.unn4m3d.klauncher.components.Crypt;
 import net.the_sinner.unn4m3d.klauncher.components.UtilsKt;
 
 import javax.swing.*;
@@ -50,7 +43,7 @@ public class MainController {
     private  Button settingsButton;
 
     private List<ShortServerData> servers;
-    private API api = new API(Config.API_URL);
+    private API api = APIKt.getApiInstance();
 
     @FXML
     public void initialize()
@@ -59,11 +52,15 @@ public class MainController {
             if (
                     MainClassKt.getConfig().getOpt("remember",false) &&
                     MainClassKt.getConfig().getOpt("password", "") != "") {
-                passwordField.setText(
-                        Crypt.decrypt(Crypt.b64decode(
-                                MainClassKt.getConfig().getOpt("password","")
-                        ),UtilsKt.padRight(Config.PROTECTION_KEY,16,'-'))
-                );
+                try {
+                    passwordField.setText(
+                            Crypt.decrypt(
+                                    MainClassKt.getConfig().getOpt("password",""),
+                            UtilsKt.padRight(Config.PROTECTION_KEY,16,'-'))
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 loginField.setText(MainClassKt.getConfig().<String>getOpt("username",""));
             }
@@ -93,9 +90,13 @@ public class MainController {
 
             if(MainClassKt.getConfig().<Boolean>getOpt("remember",false))
             {
-                MainClassKt.getConfig().set("password",
-                        Crypt.b64encode(Crypt.encrypt(passwordField.getText(),
-                                UtilsKt.padRight(Config.PROTECTION_KEY,16,'-'))));
+                try {
+                    MainClassKt.getConfig().set("password",
+                            Crypt.encrypt(passwordField.getText(),
+                                    UtilsKt.padRight(Config.PROTECTION_KEY,16,'*')));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 MainClassKt.getConfig().set("username", loginField.getText());
                 MainClassKt.getConfig().save();
             }
@@ -103,7 +104,7 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("UpdaterForm.fxml"));
             Parent root = loader.load();
             ShortServerData serv = servers.get(serverBox.getSelectionModel().getSelectedIndex());
-            UpdaterController ctrl = (UpdaterController)loader.getController();
+            UpdaterController ctrl = loader.getController();
             ctrl.setData(data,serv.getShortName(),serv.getVersion());
             Stage stage = new Stage();
             stage.setTitle("KLauncher");
@@ -124,7 +125,7 @@ public class MainController {
         FXMLLoader ldr = new FXMLLoader(getClass().getResource("SettingsForm.fxml"));
         try {
             Parent root = ldr.load();
-            SettingsController ctrl = (SettingsController)ldr.getController();
+            SettingsController ctrl = ldr.getController();
             Node self = (Node)evt.getSource();
             ctrl.setNode(self);
             self.getScene().getWindow().hide();

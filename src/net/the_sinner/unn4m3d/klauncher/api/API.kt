@@ -4,6 +4,9 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import khttp.get
 import net.the_sinner.unn4m3d.filecheck.FileInfo
+import net.the_sinner.unn4m3d.klauncher.Config
+import net.the_sinner.unn4m3d.klauncher.components.encrypt
+import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 
@@ -12,7 +15,12 @@ import java.util.*
  */
 class API(val url : String) {
 
-    fun query(path : String, params : Map<String,String>) =  get("$url$path",params = params).jsonObject
+    fun query(path : String, params : Map<String,String>) : JSONObject {
+        val resp = get("$url$path",params = params)
+        return resp.jsonObject
+    }
+
+    protected val _session = getSession()
 
     protected fun throw_ex(resp : JSONObject)
     {
@@ -20,13 +28,24 @@ class API(val url : String) {
             throw APIException(resp.optString("error","Error"),resp.optString("errorType","unknown"))
     }
 
+    protected fun getSession() : APISession {
+        val resp = query("api/session",mapOf())
+        throw_ex(resp)
+
+        return APISession(
+                id = resp.optInt("id",0),
+                key = resp.optString("key",Config.PROTECTION_KEY)
+        )
+    }
+
     @Throws(APIException::class)
     fun auth(username : String, password : String, version : String) : SessionData
     {
         val resp = query("api/auth", mapOf(
                 "username" to username,
-                "password" to password,
-                "version"  to version
+                "password" to encrypt(password,_session.key),
+                "version"  to encrypt("$version\$${System.currentTimeMillis()}",_session.key),
+                "sid"      to _session.id.toString()
         ))
 
         throw_ex(resp)
@@ -37,7 +56,7 @@ class API(val url : String) {
     @Throws(APIException::class)
     fun servers() : List<ShortServerData>
     {
-        val resp = query("api/servers",HashMap<String,String>())
+        val resp = query("api/servers", mapOf("sid" to _session.id.toString()))
 
         throw_ex(resp)
 
@@ -57,7 +76,7 @@ class API(val url : String) {
     @Throws(APIException::class)
     fun server(name : String) : ServerData
     {
-        val resp = query("api/server", mapOf("name" to name))
+        val resp = query("api/server", mapOf("name" to name, "sid" to _session.id.toString()))
         throw_ex(resp)
 
         var sd = ServerData(
@@ -86,7 +105,7 @@ class API(val url : String) {
 
     @Throws(APIException::class)
     fun files(client : String, all : Boolean) : FilesData {
-        val resp = query("api/files", mapOf("client" to client, "pretty" to "yes", "all" to all.toString()))
+        val resp = query("api/files", mapOf("client" to client, "pretty" to "yes", "all" to all.toString(), "sid" to _session.id.toString()))
         throw_ex(resp)
 
         return FilesData(
@@ -117,3 +136,5 @@ class API(val url : String) {
     }
 
 }
+
+val apiInstance = API(Config.API_URL)

@@ -1,12 +1,10 @@
 package net.the_sinner.unn4m3d.klauncher.components
 
-import net.launcher.utils.Crypt
 import net.launcher.utils.java.eURLClassLoader
 import net.minecraft.launcher.Launcher
 import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Dimension
-import java.awt.event.WindowListener
 import java.io.File
 import java.net.URL
 import java.util.*
@@ -52,7 +50,7 @@ class Game(val data : GameData) : JFrame(){
         }
 
         val username = data.username
-        val sessionId = Crypt.xorencode(data.sessionId,sett.pkey)
+        val sessionId = data.sessionId xor sett.pkey
 
         if(old) {
 
@@ -124,9 +122,9 @@ class Game(val data : GameData) : JFrame(){
                 callback("Authlib agent is present")
 
                 params.add("--accessToken")
-                params.add(Crypt.b64encode(sessionId))
+                params.add(b64encode(sessionId))
                 params.add("--uuid")
-                params.add(Crypt.b64encode(Crypt.xorencode(data.accessToken,sett.pkey)))
+                params.add(b64encode(data.accessToken xor sett.pkey))
 
                 params.add("--userProperties")
                 params.add("{}")
