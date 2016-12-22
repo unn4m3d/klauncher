@@ -26,6 +26,7 @@ fun main(args : Array<String>) {
     }*/
    // val api = API(Config.API_URL)
     //val form = MainForm(api)
+    config.load()
     MainApp.main(args)
 }
 

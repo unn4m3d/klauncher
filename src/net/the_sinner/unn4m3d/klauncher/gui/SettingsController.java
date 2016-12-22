@@ -62,6 +62,7 @@ public class SettingsController {
         memSlider.setMin(512);
         memSlider.setMax(UtilsKt.ramSize() / 1024 / 1024);
         memSlider.setValue(MainClassKt.getConfig().getOpt("memory",1024));
+        rememberPassword.setSelected(MainClassKt.getConfig().<Boolean>getOpt("remember",false));
     }
 
 

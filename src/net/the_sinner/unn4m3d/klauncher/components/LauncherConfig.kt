@@ -13,12 +13,14 @@ class LauncherConfig(val file : File)
     private var data = JSONObject()
 
     operator fun get(key : String) : Any{
+        println("Getting $key")
         if(!data.has(key) && defaults.containsKey(key))
             data.put(key,defaults[key])
 
         return data[key]
     }
     operator fun set(key : String, value : Any){
+        println("Setting $key to $value")
         data.put(key,value)
     }
 
@@ -49,6 +51,7 @@ class LauncherConfig(val file : File)
 
     fun save()
     {
+        //println(data.toStrin)
         file.parentFile.mkdirs()
         file.writeText(data.toString())
     }

@@ -1,29 +1,22 @@
 package net.the_sinner.unn4m3d.klauncher.gui;
 
-import com.sun.javafx.tk.Toolkit;
-import com.sun.javaws.progress.Progress;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.util.Callback;
 import kotlin.Unit;
 import net.the_sinner.unn4m3d.klauncher.Config;
 import net.the_sinner.unn4m3d.klauncher.MainClassKt;
 import net.the_sinner.unn4m3d.klauncher.api.SessionData;
 import net.the_sinner.unn4m3d.klauncher.components.*;
 
-import javax.swing.event.DocumentEvent;
 
 import static net.the_sinner.unn4m3d.klauncher.components.UtilsKt.*;
 
 import java.io.File;
-import java.io.ObjectInput;
-import java.util.LinkedHashMap;
 import java.util.logging.Level;
 
 /**

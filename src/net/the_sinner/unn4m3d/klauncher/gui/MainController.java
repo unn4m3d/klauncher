@@ -64,6 +64,8 @@ public class MainController {
                                 MainClassKt.getConfig().getOpt("password","")
                         ),UtilsKt.padRight(Config.PROTECTION_KEY,16,'-'))
                 );
+
+                loginField.setText(MainClassKt.getConfig().<String>getOpt("username",""));
             }
 
             servers = api.servers();
@@ -94,6 +96,8 @@ public class MainController {
                 MainClassKt.getConfig().set("password",
                         Crypt.b64encode(Crypt.encrypt(passwordField.getText(),
                                 UtilsKt.padRight(Config.PROTECTION_KEY,16,'-'))));
+                MainClassKt.getConfig().set("username", loginField.getText());
+                MainClassKt.getConfig().save();
             }
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("UpdaterForm.fxml"));
