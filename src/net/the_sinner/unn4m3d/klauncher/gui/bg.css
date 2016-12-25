@@ -1,0 +1,11 @@
+#pane {
+    -fx-background-image : url("background.png");
+    -fx-background-repeat : stretch;
+    -fx-background-size : cover;
+    -fx-background-position : center center
+}
+
+.transparent, .list-cell {
+    -fx-background-color : transparent;
+    //-fx-opacity : 0;
+}

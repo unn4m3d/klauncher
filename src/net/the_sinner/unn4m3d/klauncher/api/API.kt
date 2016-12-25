@@ -15,8 +15,13 @@ import java.util.*
  */
 class API(val url : String) {
 
-    fun query(path : String, params : Map<String,String>) : JSONObject {
-        val resp = get("$url$path",params = params)
+    fun query(path : String, params : Map<String,String>, no_sid : Boolean = false) : JSONObject {
+        val addr = "$url$path"
+        if(no_sid)
+            println("Query : $addr (NO SID)")
+        else
+            println("Query : $addr (SID ${_session.id})")
+        val resp = get(addr,params = params)
         return resp.jsonObject
     }
 
@@ -29,7 +34,7 @@ class API(val url : String) {
     }
 
     protected fun getSession() : APISession {
-        val resp = query("api/session",mapOf())
+        val resp = query("api/session",mapOf(),true)
         throw_ex(resp)
 
         return APISession(
@@ -133,6 +138,12 @@ class API(val url : String) {
                 resp.optString("dir","assets"),
                 resp.getJSONArray("files").map{ it.toString() }
         )
+    }
+
+    fun news() : String
+    {
+        println("Query : $url/api/news")
+        return get("$url/api/news").text
     }
 
 }

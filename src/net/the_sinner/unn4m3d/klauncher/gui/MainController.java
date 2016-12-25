@@ -1,13 +1,20 @@
 package net.the_sinner.unn4m3d.klauncher.gui;
 
+import com.sun.webkit.WebPage;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import net.the_sinner.unn4m3d.klauncher.Config;
 import net.the_sinner.unn4m3d.klauncher.MainClassKt;
@@ -16,7 +23,9 @@ import net.the_sinner.unn4m3d.klauncher.components.Crypt;
 import net.the_sinner.unn4m3d.klauncher.components.UtilsKt;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 import static net.the_sinner.unn4m3d.klauncher.components.JavaMapKt.javaMap;
 
@@ -42,6 +51,9 @@ public class MainController {
     @FXML
     private  Button settingsButton;
 
+    @FXML
+    private WebView newsView;
+
     private List<ShortServerData> servers;
     private API api = APIKt.getApiInstance();
 
@@ -66,8 +78,33 @@ public class MainController {
             }
 
             servers = api.servers();
+            System.out.println("Got " + servers.size() + " servers");
             serverBox.setItems(FXCollections.observableList(javaMap(servers,(ShortServerData s) -> s.getName())));
+            System.out.println("Set servers");
             serverBox.setValue(servers.get(0).getName());
+            newsView.getEngine().documentProperty().addListener((nv, o, n) -> {
+                try {
+                    Field f = newsView.getEngine().getClass().getDeclaredField("page");
+                    f.setAccessible(true);
+                    WebPage page = (WebPage)f.get(newsView.getEngine());
+                    page.setBackgroundColor(new Color(0,0,0,0).getRGB());
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            });
+            Task task = new Task() {
+                @Override
+                protected Object call() throws Exception {
+                    String text = api.news();
+                    System.out.println(text);
+                    Platform.runLater(() -> newsView.getEngine().loadContent(text));
+                    return null;
+                }
+            };
+
+            new Thread(task).start();
             statusLabel.setText("Готово");
         } catch (APIException e) {
             e.printStackTrace();
@@ -112,6 +149,7 @@ public class MainController {
             stage.show();
             ctrl._initialize();
             ((Node)evt.getSource()).getScene().getWindow().hide();
+
         } catch (APIException e) {
             statusLabel.setText("[" + e.getErrorType().toUpperCase() + "] " + e.getError());
             JOptionPane.showMessageDialog(null,e.getError(),e.getErrorType().toUpperCase(),0);

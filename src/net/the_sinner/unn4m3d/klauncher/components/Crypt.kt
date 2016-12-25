@@ -3,7 +3,6 @@
 package net.the_sinner.unn4m3d.klauncher.components
 
 import java.nio.charset.Charset
-import java.security.MessageDigest
 import java.security.SecureRandom
 import java.util.*
 import javax.crypto.Cipher
