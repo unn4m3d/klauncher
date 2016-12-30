@@ -11,15 +11,31 @@ class FileChecker(val path : String, val files : Map<String,FileInfo>){
     fun check(ignore : Regex, callback : (State,Exception?,String?) -> Unit) : ArrayList<FileResult>
     {
         callback(State.START,null,"Starting...")
+        callback(State.START,null,"Ignore regex is /${ignore.pattern}/")
         val ftw = File(path).walkTopDown()
         var _files = HashMap<String,String>()
         for(file in ftw) {
             val name = file.absolutePath.replace(path, "")
-            if((ignore.toString().isEmpty() || !name.matches(ignore)) && !file.isDirectory) {
+            /*if((ignore.toString().isEmpty() || !name.matches(ignore)) && !file.isDirectory) {
                 callback(State.LISTING, null, "Adding file $name")
                 _files[name] = file.absolutePath
             } else {
                 callback(State.LISTING, null, "Skipping file $name")
+            }*/
+            if(file.isDirectory)
+                callback(State.LISTING, null, "Skipping directory $name")
+            else {
+                if(ignore.pattern.isEmpty()) {
+                    callback(State.LISTING, null, "Adding (E) file $name")
+                    _files[name] = file.absolutePath
+                }
+                else if(ignore.matches(name))
+                    callback(State.LISTING, null, "Skipping file $name")
+                else
+                {
+                    callback(State.LISTING, null, "Adding file $name")
+                    _files[name] = file.absolutePath
+                }
             }
         }
 
@@ -50,8 +66,11 @@ class FileChecker(val path : String, val files : Map<String,FileInfo>){
         }
 
         for(pair in _files) {
-            if(ignore.toString().isEmpty() || !pair.key.matches(ignore) && !File(pair.value).isDirectory)
-                result.add(FileResult(pair.key,FileState.UNWANTED))
+            /*if(ignore.toString().isEmpty() || !pair.key.matches(ignore) && !File(pair.value).isDirectory)*/
+            if(ignore.pattern.isEmpty() && !File(pair.value).isDirectory)
+                result.add(FileResult(pair.value,FileState.UNWANTED))
+            else if(!ignore.matches(pair.key) && !File(pair.value).isDirectory)
+                result.add(FileResult(pair.value,FileState.UNWANTED))
         }
 
         callback(State.FINISH,null,"Finished")

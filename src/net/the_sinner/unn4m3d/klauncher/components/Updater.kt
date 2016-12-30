@@ -8,6 +8,7 @@ import java.io.File
 import java.util.logging.Level
 import khttp.get
 import net.the_sinner.unn4m3d.klauncher.api.apiInstance
+import java.io.FileInputStream
 
 /**
  * Created by unn4m3d on 16.12.16.
@@ -73,7 +74,10 @@ fun checkClient(dir : File, sn : String, cb : (Level,String,Exception?) -> Unit)
             }
             FileState.UNWANTED -> {
                 cb(Level.WARNING,"Файл ${file.path} будет удален",null)
-                File(file.path).delete()
+                if(File(file.path).delete())
+                    cb(Level.INFO, "Файл удален",null)
+                else
+                    cb(Level.SEVERE, "Файл не может быть удален", null)
             }
             else -> {}
         }
@@ -111,12 +115,18 @@ fun downloadAssets(dir : File, cb: (Level,String,Exception?) -> Unit)
 {
     dir.mkdirs()
     val assets = apiInstance.assets()
-    for(asset in assets.files)
+    /*for(asset in assets.files)
     {
         cb(Level.INFO, "Загрузка файла ${asset}", null)
         downloadFile(dir,assets.dir, asset) { d: Long, t: Long ->
             cb(Level.OFF,"Загрузка ${asset} (${size(d)}/${size(t)} ${d/t.toFloat()*100}%)", null)
         }
+    }*/
+    downloadFile(dir.parentFile,File(assets).parent,File.separator + File(assets).name) { d: Long, t: Long ->
+        cb(Level.OFF,"Загрузка $assets (${size(d)}/${size(t)} ${d/t.toFloat()*100}%)", null)
+    }
+    unzip(FileInputStream(dir.parentFile.resolve("assets.zip")),dir){
+        cb(Level.INFO,"Unpacking asset #$it",null)
     }
 }
 

@@ -98,8 +98,6 @@ public class MainController {
                 @Override
                 protected Object call() throws Exception {
                     String text = api.news();
-                    System.out.println("News loaded");
-                    //System.out.println(text);
                     Platform.runLater(() -> newsView.getEngine().loadContent(text));
                     return null;
                 }

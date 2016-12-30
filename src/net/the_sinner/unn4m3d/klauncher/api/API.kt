@@ -129,15 +129,12 @@ class API(val url : String) {
     }
 
     @Throws(APIException::class)
-    fun assets() : AssetsData
+    fun assets() : String
     {
         val resp = query("api/assets",mapOf())
         throw_ex(resp)
 
-        return AssetsData(
-                resp.optString("dir","assets"),
-                resp.getJSONArray("files").map{ it.toString() }
-        )
+        return resp.optString("path", "/clients/assets.zip")
     }
 
     fun news() : String
