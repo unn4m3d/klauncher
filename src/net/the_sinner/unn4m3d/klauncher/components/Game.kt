@@ -2,6 +2,7 @@ package net.the_sinner.unn4m3d.klauncher.components
 
 import net.launcher.utils.java.eURLClassLoader
 import net.minecraft.launcher.Launcher
+import net.the_sinner.unn4m3d.klauncher.Config
 import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Dimension
@@ -19,6 +20,7 @@ import kotlin.system.exitProcess
 class Game(val data : GameData) : JFrame(){
 
     var mcApplet : Launcher? = null
+    @Throws(Exception::class)
     fun launch(gameDir : String, sett : Settings, callback : (String) -> Unit)
     {
         val bin = "$gameDir${File.separator}bin${File.separator}"
@@ -49,8 +51,12 @@ class Game(val data : GameData) : JFrame(){
             callback("Detected new version")
         }
 
+        callback("Continuing...")
+
         val username = data.username
-        val sessionId = data.sessionId xor sett.pkey
+        val sessionId = data.sessionId
+        println("Decrypted sid")
+        //println("SID ${sessionId}, ATK $atok")
 
         if(old) {
 
@@ -122,9 +128,10 @@ class Game(val data : GameData) : JFrame(){
                 callback("Authlib agent is present")
 
                 params.add("--accessToken")
-                params.add(b64encode(sessionId))
+                params.add(sessionId)
                 params.add("--uuid")
-                params.add(b64encode(data.accessToken xor sett.pkey))
+
+                params.add(data.accessToken)
 
                 params.add("--userProperties")
                 params.add("{}")
@@ -181,6 +188,7 @@ class Game(val data : GameData) : JFrame(){
 
             val main = start.getMethod("main",Array<String>(0){""}.javaClass)
             callback("!!! LAUNCHING !!!")
+            println("PARAMS : ${params.joinToString()}")
             main.invoke(null,params.toTypedArray())
         }
 

@@ -98,7 +98,8 @@ public class MainController {
                 @Override
                 protected Object call() throws Exception {
                     String text = api.news();
-                    System.out.println(text);
+                    System.out.println("News loaded");
+                    //System.out.println(text);
                     Platform.runLater(() -> newsView.getEngine().loadContent(text));
                     return null;
                 }
@@ -152,7 +153,37 @@ public class MainController {
 
         } catch (APIException e) {
             statusLabel.setText("[" + e.getErrorType().toUpperCase() + "] " + e.getError());
-            JOptionPane.showMessageDialog(null,e.getError(),e.getErrorType().toUpperCase(),0);
+            if(e.getErrorType().equals("launcher"))
+            {
+                int reply = JOptionPane.showConfirmDialog(
+                        null,
+                        "Вы используете устаревшую версию лаунчера. Для продолжения использования необходимо скачать новую версию. Начать загрузку?",
+                        "Лаунчер устарел",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if(reply == JOptionPane.OK_OPTION)
+                {
+                    FXMLLoader ldr = new FXMLLoader(getClass().getResource("LauncherForm.fxml"));
+                    try {
+                        Parent root = ldr.load();
+                        Stage s = new Stage();
+                        s.setTitle("Launcher update");
+                        s.setScene(new Scene(root));
+                        s.show();
+                        ((Node)evt.getSource()).getScene().getWindow().hide();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+
+                }
+                else
+                {
+                    System.exit(0);
+                }
+            }
+            else
+                JOptionPane.showMessageDialog(null,e.getError(),e.getErrorType().toUpperCase(),0);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -69,25 +69,29 @@ public class UpdaterController {
                     @Override
                     public Object call() {
                         Game game = new Game(new GameData(session.getUsername(), session.getSessionId(), session.getAccessToken()));
-                        game.launch(
-                                fileJoin(getAppData(), Config.APP_FOLDER + File.separator + server).getAbsolutePath(),
-                                new Settings(
-                                        640, 480,
-                                        Config.PROTECTION_KEY,
-                                        "Minecraft unn4m3d",
-                                        false,
-                                        fileJoin(getAppData(), Config.APP_FOLDER).getAbsolutePath(),
-                                        version
-                                ), (s) -> {
-                                    println(Level.INFO, s);
-                                    if (s.startsWith("!!! ")) {
-                                        Platform.runLater(() ->
-                                                progressBar.getScene().getWindow().hide());
-                                        //System.out.println(s);
-                                        //System.exit(0);
-                                    }
-                                    return Unit.INSTANCE;
-                                });
+                        try {
+                            game.launch(
+                                    fileJoin(getAppData(), Config.APP_FOLDER + File.separator + server).getAbsolutePath(),
+                                    new Settings(
+                                            640, 480,
+                                            Config.PROTECTION_KEY,
+                                            "Minecraft unn4m3d",
+                                            false,
+                                            fileJoin(getAppData(), Config.APP_FOLDER).getAbsolutePath(),
+                                            version
+                                    ), (s) -> {
+                                        println(Level.INFO, s);
+                                        if (s.startsWith("!!! ")) {
+                                            Platform.runLater(() ->
+                                                    progressBar.getScene().getWindow().hide());
+                                            //System.out.println(s);
+                                            //System.exit(0);
+                                        }
+                                        return Unit.INSTANCE;
+                                    });
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
                         return null;
                     }
                 };

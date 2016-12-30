@@ -33,6 +33,7 @@ fun generateIV(iv : String) = IvParameterSpec(iv.toByteArray().take(16).toByteAr
 @Throws(Exception::class)
 fun encrypt(str : String, key : String) : String
 {
+    println("Encryption")
     val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
     val iv = generateIV(cipher.blockSize)
     cipher.init(Cipher.ENCRYPT_MODE, generateKey(key), iv)
@@ -44,6 +45,7 @@ fun encrypt(str : String, key : String) : String
 fun decrypt(str : String, key : String) : String {
     if(!str.contains('$'))
         throw Exception("No IV specified")
+    println("Decryption")
     val parts = str.split('$')
     val iv = generateIV(b64decode(parts[0]))
     val enc = b64decode(parts[1])
