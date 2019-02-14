@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import kotlin.Unit;
 import net.the_sinner.unn4m3d.klauncher.Dummy;
-import net.the_sinner.unn4m3d.klauncher.api.APIKt;
+import net.the_sinner.unn4m3d.klauncher.api.API;
 import net.the_sinner.unn4m3d.klauncher.components.UpdaterKt;
 import net.the_sinner.unn4m3d.klauncher.components.UtilsKt;
 
@@ -26,10 +26,14 @@ public class DownloadController {
     public void initialize()
     {
         statusLabel.setText("Загрузка...");
+    }
+
+    public void postInitialize(API apiInstance)
+    {
         Task<Boolean> task = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
-                String path = APIKt.getApiInstance().launcher(UtilsKt.getPlatform());
+                String path = apiInstance.launcher(UtilsKt.getPlatform());
                 UpdaterKt.downloadFile(
                         new File(Dummy.getPath()).getParentFile(),
                         new File(path).getParent(),

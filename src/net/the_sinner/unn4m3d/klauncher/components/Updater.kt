@@ -7,7 +7,9 @@ import net.the_sinner.unn4m3d.klauncher.Config
 import java.io.File
 import java.util.logging.Level
 import khttp.get
-import net.the_sinner.unn4m3d.klauncher.api.apiInstance
+import net.the_sinner.unn4m3d.klauncher.api.API
+import net.the_sinner.unn4m3d.klauncher.api.FilesData
+//import net.the_sinner.unn4m3d.klauncher.api.apiInstance
 import java.io.FileInputStream
 
 /**
@@ -38,7 +40,7 @@ fun downloadFile(dir : File, upDir : String, name : String, cb : (Long,Long) -> 
 }
 
 
-fun checkClient(dir : File, sn : String, cb : (Level,String,Exception?) -> Unit)
+fun checkClient(apiInstance : API, dir : File, sn : String, cb : (Level,String,Exception?) -> Unit)
 {
     cb(Level.INFO, "Загрузка информации...", null)
     val info = apiInstance.files(sn,false)
@@ -84,7 +86,7 @@ fun checkClient(dir : File, sn : String, cb : (Level,String,Exception?) -> Unit)
     }
 }
 
-fun downloadClient(dir : File, server : String, cb: (Level,String,Exception?) -> Unit)
+fun downloadClient(apiInstance: API, dir : File, server : String, cb: (Level,String,Exception?) -> Unit)
 {
     cb(Level.INFO,"Получение списка файлов",null)
     var files = apiInstance.files(server,true)
@@ -111,7 +113,7 @@ fun size(l : Long) : String
     return if(i > 0){"$s ${pref[i-1]}B"}else{"$s B"}
 }
 
-fun downloadAssets(dir : File, cb: (Level,String,Exception?) -> Unit)
+fun downloadAssets(apiInstance: API, dir : File, cb: (Level,String,Exception?) -> Unit)
 {
     dir.mkdirs()
     val assets = apiInstance.assets()
@@ -130,7 +132,7 @@ fun downloadAssets(dir : File, cb: (Level,String,Exception?) -> Unit)
     }
 }
 
-fun launchUpdater(dir : File, server : String, assetsDir : File, forceUpd: Boolean, cb: (Level,String,Exception?) -> Unit) : Boolean
+fun launchUpdater(apiInstance: API, dir : File, server : String, assetsDir : File, forceUpd: Boolean, cb: (Level,String,Exception?) -> Unit) : Boolean
 {
     cb(Level.INFO, "CD ${dir.absolutePath} AD ${assetsDir.absolutePath}",null)
     cb(Level.INFO,"Проверка папки клиента",null)
@@ -141,7 +143,7 @@ fun launchUpdater(dir : File, server : String, assetsDir : File, forceUpd: Boole
     {
         try {
             cb(Level.INFO, "Клиент найден", null)
-            checkClient(dir, server, cb)
+            checkClient(apiInstance, dir, server, cb)
         }catch (e : Exception){
             b = false
             cb(Level.WARNING, e.message.toString() ,e)
@@ -153,7 +155,7 @@ fun launchUpdater(dir : File, server : String, assetsDir : File, forceUpd: Boole
         try{
         dir.mkdirs()
         cb(Level.WARNING,"Клиент не найден",null)
-        downloadClient(dir,server,cb)
+        downloadClient(apiInstance, dir,server,cb)
         } catch ( e : Exception) {
             b = false
             cb(Level.WARNING, e.message.toString(), e)
@@ -162,7 +164,7 @@ fun launchUpdater(dir : File, server : String, assetsDir : File, forceUpd: Boole
     }
 
     try {
-        if (!assetsDir.exists()) downloadAssets(assetsDir, cb)
+        if (!assetsDir.exists()) downloadAssets(apiInstance, assetsDir, cb)
     } catch (e : Exception) {
         b = false
         cb(Level.WARNING, e.message.toString(), e)

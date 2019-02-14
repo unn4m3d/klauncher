@@ -10,6 +10,8 @@ import javafx.scene.control.*;
 import kotlin.Unit;
 import net.the_sinner.unn4m3d.klauncher.Config;
 import net.the_sinner.unn4m3d.klauncher.MainClassKt;
+import net.the_sinner.unn4m3d.klauncher.api.API;
+import net.the_sinner.unn4m3d.klauncher.api.FilesData;
 import net.the_sinner.unn4m3d.klauncher.api.SessionData;
 import net.the_sinner.unn4m3d.klauncher.components.*;
 
@@ -39,15 +41,16 @@ public class UpdaterController {
     private SessionData session;
     private String server;
     private String version;
+    private API api;
 
-    public void _initialize()
-    {
+    public void _initialize() {
         //logView.setCellFactory((ListView<LogMessage> lw) -> new LogMessageCell());
         Task<Boolean> task = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
                 return UpdaterKt.launchUpdater(
-                        fileJoin(getAppData(),Config.APP_FOLDER + File.separator + server),
+                        api,
+                        fileJoin(getAppData(), Config.APP_FOLDER + File.separator + server),
                         server,
                         fileJoin(getAppData(), Config.APP_FOLDER + File.separator + "assets"),
                         MainClassKt.getForceUpdate(),
@@ -64,7 +67,7 @@ public class UpdaterController {
 
         task.setOnSucceeded((WorkerStateEvent e) -> {
             boolean value = task.getValue();
-            if(value) {
+            if (value) {
                 Task gtask = new Task() {
                     @Override
                     public Object call() {
@@ -102,8 +105,8 @@ public class UpdaterController {
 
         task.setOnFailed((e) -> {
             status.setText("ERROR! " + e.toString());
-            println(Level.ALL,e.toString());
-            Throwable thr = (Throwable)(e.getSource().exceptionProperty().get());
+            println(Level.ALL, e.toString());
+            Throwable thr = (Throwable) (e.getSource().exceptionProperty().get());
             thr.printStackTrace();
         });
 
@@ -111,13 +114,17 @@ public class UpdaterController {
 
     }
 
-    public void setData(SessionData sd, String serv, String v)
-    {
+    public void setData(SessionData sd, String serv, String v) {
         println(Level.INFO, "Server is " + serv + " [" + v + "]");
         session = sd;
         server = serv;
         version = v;
 
+    }
+
+    public void setApi(API data)
+    {
+        api = data;
     }
 
     private void println(LogMessage m)

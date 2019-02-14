@@ -17,22 +17,38 @@ class API(val url : String) {
 
     fun query(path : String, params : Map<String,String>, no_sid : Boolean = false) : JSONObject {
         val addr = "$url$path"
-        if(no_sid)
+        if(no_sid || _session == null)
             println("Query : $addr (NO SID)")
         else
-            println("Query : $addr (SID ${_session.id})")
+            println("Query : $addr (SID ${session().id})")
         val resp = get(addr,params = params)
         return resp.jsonObject
     }
 
-    protected val _session = getSession()
+    protected var _session : APISession? = null
 
+    @Throws(APIException::class)
     protected fun throw_ex(resp : JSONObject)
     {
         if(resp.has("error") && resp["error"] != null)
             throw APIException(resp.optString("error","Error"),resp.optString("errorType","unknown"))
     }
 
+    @Throws(APIException::class)
+    public fun initialize()
+    {
+        this._session = getSession()
+    }
+
+    protected fun session() : APISession {
+        if (_session == null) {
+            throw APIException("_session is null!", "API")
+        }
+        return _session!!
+    }
+
+
+    @Throws(APIException::class)
     protected fun getSession() : APISession {
         val resp = query("api/session",mapOf(),true)
         throw_ex(resp)
@@ -48,9 +64,9 @@ class API(val url : String) {
     {
         val resp = query("api/auth", mapOf(
                 "username" to username,
-                "password" to encrypt(password,_session.key),
-                "version"  to encrypt("$version\$${System.currentTimeMillis()}",_session.key),
-                "sid"      to _session.id.toString()
+                "password" to encrypt(password,session().key),
+                "version"  to encrypt("$version\$${System.currentTimeMillis()}",session().key),
+                "sid"      to session().id.toString()
         ))
 
         throw_ex(resp)
@@ -61,7 +77,7 @@ class API(val url : String) {
     @Throws(APIException::class)
     fun servers() : List<ShortServerData>
     {
-        val resp = query("api/servers", mapOf("sid" to _session.id.toString()))
+        val resp = query("api/servers", mapOf("sid" to session().id.toString()))
 
         throw_ex(resp)
 
@@ -81,7 +97,7 @@ class API(val url : String) {
     @Throws(APIException::class)
     fun server(name : String) : ServerData
     {
-        val resp = query("api/server", mapOf("name" to name, "sid" to _session.id.toString()))
+        val resp = query("api/server", mapOf("name" to name, "sid" to session().id.toString()))
         throw_ex(resp)
 
         var sd = ServerData(
@@ -110,7 +126,7 @@ class API(val url : String) {
 
     @Throws(APIException::class)
     fun files(client : String, all : Boolean) : FilesData {
-        val resp = query("api/files", mapOf("client" to client, "pretty" to "yes", "all" to all.toString(), "sid" to _session.id.toString()))
+        val resp = query("api/files", mapOf("client" to client, "pretty" to "yes", "all" to all.toString(), "sid" to session().id.toString()))
         throw_ex(resp)
 
         return FilesData(
@@ -144,5 +160,3 @@ class API(val url : String) {
     }
 
 }
-
-val apiInstance = API(Config.API_URL)

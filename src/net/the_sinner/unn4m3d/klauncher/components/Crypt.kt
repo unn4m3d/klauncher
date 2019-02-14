@@ -62,7 +62,7 @@ infix fun Byte.xor(another : Byte) = (this.toInt() xor another.toInt()).toByte()
 infix fun ByteArray.xor(key : ByteArray) : ByteArray{
     val output = ByteArray(this.size)
     this.forEachIndexed { i, byte ->
-        output[i] = byte xor key[i % key.size]
+        output[i] = byte xor key[i.rem(key.size)]
     }
     return output
 }

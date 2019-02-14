@@ -62,7 +62,6 @@ class FileChecker(val path : String, val files : Map<String,FileInfo>){
                 if(_files.containsKey(pair.key))
                     _files.remove(pair.key)
             }
-
         }
 
         for(pair in _files) {

@@ -21,6 +21,7 @@ import net.the_sinner.unn4m3d.klauncher.MainClassKt;
 import net.the_sinner.unn4m3d.klauncher.api.*;
 import net.the_sinner.unn4m3d.klauncher.components.Crypt;
 import net.the_sinner.unn4m3d.klauncher.components.UtilsKt;
+import org.json.JSONException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,12 +56,12 @@ public class MainController {
     private WebView newsView;
 
     private List<ShortServerData> servers;
-    private API api = APIKt.getApiInstance();
+    private API api;
 
     @FXML
     public void initialize()
     {
-        try {
+        /*try {
             if (
                     MainClassKt.getConfig().getOpt("remember",false) &&
                     MainClassKt.getConfig().getOpt("password", "") != "") {
@@ -109,7 +110,94 @@ public class MainController {
             e.printStackTrace();
             statusLabel.setText("[" + e.getErrorType().toUpperCase() + "] " + e.getError());
             JOptionPane.showMessageDialog(null,e.getError(),e.getErrorType().toUpperCase(),0);
-        }
+        }*/
+    }
+
+    public void postInitialize(Stage stage)
+    {
+        new Thread(()->{
+            try {
+                synchronized (this) {
+                    this.api = new API(Config.API_URL);
+                    this.api.initialize();
+                }
+
+                if (
+                        MainClassKt.getConfig().getOpt("remember",false) &&
+                                MainClassKt.getConfig().getOpt("password", "") != "") {
+
+                        Platform.runLater(() -> {
+                            try {
+                                passwordField.setText(
+                                    Crypt.decrypt(
+                                            MainClassKt.getConfig().getOpt("password", ""),
+                                            UtilsKt.padRight(Config.PROTECTION_KEY, 16, '-'))
+                                );
+                            } catch (Exception e) {
+                                setError(e.getMessage(), "PWD");
+                                e.printStackTrace();
+                            }
+                        });
+
+
+                    Platform.runLater(() -> loginField.setText(MainClassKt.getConfig().getOpt("username","")));
+                }
+            } catch( APIException e) {
+                setError(e.getError(), e.getErrorType());
+                e.printStackTrace();
+            } catch( JSONException e) {
+                setError("Cannot connect to API", "API");
+                e.printStackTrace();
+                return;
+            } finally {
+                Platform.runLater(() -> loginButton.setDisable(true));
+
+                Platform.runLater(() -> stage.show());
+            }
+
+            setError("Loading", "...");
+
+            synchronized (this) {
+                try {
+                    this.servers = api.servers();
+                } catch ( APIException e) {
+                    setError(e.getError(), e.getErrorType());
+                    e.printStackTrace();
+                }
+            }
+
+            Platform.runLater(() -> {
+                    this.serverBox.setItems(
+                        FXCollections.observableList(javaMap(servers, (ShortServerData s) -> s.getName()))
+                    );
+                    this.serverBox.setValue(servers.get(0).getName());
+                }
+            );
+
+            newsView.getEngine().documentProperty().addListener((nv, o, n) -> {
+                try {
+                    Field f = newsView.getEngine().getClass().getDeclaredField("page");
+                    f.setAccessible(true);
+                    WebPage page = (WebPage)f.get(newsView.getEngine());
+                    page.setBackgroundColor(new Color(0,0,0,0).getRGB());
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            String text = api.news();
+            Platform.runLater(() -> newsView.getEngine().loadContent(text));
+
+            Platform.runLater(() -> statusLabel.setText("Готово!"));
+
+        }).start();
+    }
+
+    protected void setError(String text, String type)
+    {
+        Platform.runLater(()-> statusLabel.setText("[" + type.toUpperCase() + "] " + text));
     }
 
     public void onLogin(MouseEvent evt)

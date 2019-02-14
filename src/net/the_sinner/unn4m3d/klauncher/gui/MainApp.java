@@ -18,9 +18,12 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("MainForm.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("MainForm.fxml"));
+        Parent root = loader.load();
+        MainController controller = loader.<MainController>getController();
         primaryStage.setTitle("KLauncher");
         primaryStage.setScene(new Scene(root));
-        primaryStage.show();
+        controller.postInitialize(primaryStage);
+        //primaryStage.show();
     }
 }
