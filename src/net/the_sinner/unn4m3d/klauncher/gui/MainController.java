@@ -145,7 +145,7 @@ public class MainController {
             } catch( APIException e) {
                 setError(e.getError(), e.getErrorType());
                 e.printStackTrace();
-            } catch( JSONException e) {
+            } catch( Exception e) {
                 setError("Cannot connect to API", "API");
                 e.printStackTrace();
                 return;

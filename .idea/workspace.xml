@@ -11,22 +11,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5eb8d3b4-a904-4c28-b7ef-aad065c0ab29" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/org_json_json_20160810.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/org_json_json_20160810.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/klauncher_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/klauncher_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-reflect.jar" beforeDir="false" afterPath="$PROJECT_DIR$/lib/kotlin-reflect.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-runtime-1.0.3.jar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/kotlin-runtime.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-stdlib-1.0.3.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/filecheck/FileChecker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/filecheck/FileChecker.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/Config.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/api/API.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/api/API.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Crypt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Crypt.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Updater.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Updater.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/DownloadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/DownloadController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Game.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Game.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/UpdaterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/UpdaterController.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -58,27 +47,29 @@
         <counts>
           <entry key="dummy" value="30" />
           <entry key="java" value="1276" />
-          <entry key="kt" value="452" />
+          <entry key="kt" value="520" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="1276" />
-          <entry key="Kotlin" value="452" />
+          <entry key="Kotlin" value="520" />
           <entry key="PLAIN_TEXT" value="30" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
+          <entry key="class" value="1" />
           <entry key="fxml" value="1" />
           <entry key="java" value="2" />
-          <entry key="kt" value="2" />
+          <entry key="kt" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
+          <entry key="CLASS" value="1" />
           <entry key="JAVA" value="2" />
-          <entry key="Kotlin" value="2" />
+          <entry key="Kotlin" value="3" />
           <entry key="XML" value="1" />
         </counts>
       </usages-collector>
@@ -90,31 +81,40 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainApp.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="418">
+              <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+              <folding>
+                <element signature="e#631#647#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/filecheck/FileInfo.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1064">
-              <caret line="61" column="111" selection-start-line="61" selection-start-column="111" selection-end-line="61" selection-end-column="111" />
+            <state relative-caret-position="449">
+              <caret line="75" column="5" lean-forward="true" selection-start-line="75" selection-start-column="5" selection-end-line="75" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Game.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="25" column="47" selection-start-line="25" selection-start-column="47" selection-end-line="25" selection-end-column="47" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/filecheck/FileResult.kt">
+        <entry file="jar://$PROJECT_DIR$/lib/kotlin-stdlib.jar!/kotlin/text/StringsKt.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="5" column="62" selection-start-line="5" selection-start-column="62" selection-end-line="5" selection-end-column="62" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Crypt.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1121">
-              <caret line="64" column="35" selection-start-line="64" selection-start-column="35" selection-end-line="64" selection-end-column="35" />
-              <folding>
-                <element signature="e#77#268#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="190">
+              <caret line="111" column="60" selection-start-line="111" selection-start-column="60" selection-end-line="111" selection-end-column="60" />
             </state>
           </provider>
         </entry>
@@ -122,17 +122,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1116">
-              <caret line="157" column="39" selection-start-line="157" selection-start-column="39" selection-end-line="157" selection-end-column="39" />
+            <state relative-caret-position="2261">
+              <caret line="147" column="21" selection-start-line="147" selection-start-column="21" selection-end-line="147" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/Config.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="190">
+              <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -149,7 +149,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/DownloadController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
+            <state relative-caret-position="342">
               <caret line="35" column="41" selection-start-line="35" selection-start-column="41" selection-end-line="35" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -163,22 +163,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/UpdaterController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19">
+            <state relative-caret-position="608">
               <caret line="51" column="24" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/LauncherForm.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder" />
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/api/API.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2907">
+            <state relative-caret-position="435">
               <caret line="161" column="1" selection-start-line="161" selection-start-column="1" selection-end-line="161" selection-end-column="1" />
             </state>
           </provider>
@@ -247,7 +241,6 @@
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/bg.css" />
         <option value="$PROJECT_DIR$/src/security/SHA256.java" />
         <option value="$PROJECT_DIR$/src/security/SHA512.java" />
-        <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Game.kt" />
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Utils.kt" />
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/filecheck/FileChecker.kt" />
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainApp.java" />
@@ -256,8 +249,9 @@
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/UpdaterController.java" />
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Crypt.kt" />
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/DownloadController.java" />
-        <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainController.java" />
         <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/Config.java" />
+        <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainController.java" />
+        <option value="$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Game.kt" />
       </list>
     </option>
   </component>
@@ -274,6 +268,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -296,6 +291,19 @@
             <path>
               <item name="klauncher" type="b2602c69:ProjectViewProjectNode" />
               <item name="klauncher" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin-stdlib.jar" type="ab9368bb:PsiFileNode" />
+            </path>
+            <path>
+              <item name="klauncher" type="b2602c69:ProjectViewProjectNode" />
+              <item name="klauncher" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin-stdlib.jar" type="ab9368bb:PsiFileNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="klauncher" type="b2602c69:ProjectViewProjectNode" />
+              <item name="klauncher" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -317,7 +325,24 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="net" type="462c0819:PsiDirectoryNode" />
               <item name="unn4m3d" type="462c0819:PsiDirectoryNode" />
+              <item name="filecheck" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="klauncher" type="b2602c69:ProjectViewProjectNode" />
               <item name="klauncher" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="net" type="462c0819:PsiDirectoryNode" />
+              <item name="unn4m3d" type="462c0819:PsiDirectoryNode" />
+              <item name="klauncher" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="klauncher" type="b2602c69:ProjectViewProjectNode" />
+              <item name="klauncher" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="net" type="462c0819:PsiDirectoryNode" />
+              <item name="unn4m3d" type="462c0819:PsiDirectoryNode" />
+              <item name="klauncher" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="klauncher" type="b2602c69:ProjectViewProjectNode" />
@@ -357,7 +382,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -365,8 +389,8 @@
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="246" />
-    <property name="last_opened_file_path" value="$APPLICATION_HOME_DIR$/lib/forms_rt.jar!/" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/kotlin-stdlib.jar!/" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.language.Kotlin" />
@@ -388,7 +412,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Kotlin.net.the_sinner.unn4m3d.klauncher.MainClassKt">
+  <component name="RunManager" selected="Kotlin.net.the_sinner.unn4m3d.klauncher.PreloaderKt">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="" />
       <option name="DEPLOY" value="true" />
@@ -584,10 +608,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="1920" height="1053" extended-state="6" />
+    <frame x="0" y="28" width="1920" height="1018" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11940298" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.120469086" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Nl-Palette" order="2" />
       <window_info id="Capture Tool" order="3" />
@@ -597,13 +621,13 @@
       <window_info id="Image Layers" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32919255" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49573106" visible="true" weight="0.3441911" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39906833" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49573106" visible="true" weight="0.34311512" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39841986" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32942432" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50426894" side_tool="true" weight="0.5138593" />
-      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.49893278" weight="0.32681867" />
+      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.49893278" weight="0.3261851" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32942432" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32942432" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -666,13 +690,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/api/APIException.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/api/ServerData.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
@@ -853,34 +870,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Game.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="56" column="38" selection-start-line="56" selection-start-column="38" selection-end-line="56" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/filecheck/FileChecker.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1178">
-          <caret line="63" column="13" selection-start-line="63" selection-start-column="13" selection-end-line="63" selection-end-column="13" />
+          <caret line="63" column="26" selection-start-line="63" selection-start-column="26" selection-end-line="63" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Utils.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1710">
-          <caret line="95" column="31" selection-start-line="95" selection-start-column="31" selection-end-line="95" selection-end-column="31" />
+        <state relative-caret-position="484">
+          <caret line="68" column="1" selection-start-line="68" selection-start-column="1" selection-end-line="68" selection-end-column="1" />
           <folding>
             <element signature="e#53#240#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainApp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="25" column="46" selection-start-line="25" selection-start-column="46" selection-end-line="25" selection-end-column="46" />
         </state>
       </provider>
     </entry>
@@ -888,13 +891,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2964">
           <caret line="166" column="61" selection-start-line="166" selection-start-column="61" selection-end-line="166" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/filecheck/FileInfo.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1064">
-          <caret line="61" column="111" selection-start-line="61" selection-start-column="111" selection-end-line="61" selection-end-column="111" />
         </state>
       </provider>
     </entry>
@@ -919,23 +915,16 @@
       <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/api/API.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2907">
-          <caret line="161" column="1" selection-start-line="161" selection-start-column="1" selection-end-line="161" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/UpdaterController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
+        <state relative-caret-position="608">
           <caret line="51" column="24" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/DownloadController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
+        <state relative-caret-position="342">
           <caret line="35" column="41" selection-start-line="35" selection-start-column="41" selection-end-line="35" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -952,17 +941,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainController.java">
+    <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/Config.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1116">
-          <caret line="157" column="39" selection-start-line="157" selection-start-column="39" selection-end-line="157" selection-end-column="39" />
+        <state relative-caret-position="190">
+          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/Config.java">
+    <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/api/API.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        <state relative-caret-position="435">
+          <caret line="161" column="1" selection-start-line="161" selection-start-column="1" selection-end-line="161" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-stdlib.jar!/kotlin/text/StringsKt.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="111" column="60" selection-start-line="111" selection-start-column="60" selection-end-line="111" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/filecheck/FileInfo.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="75" column="5" lean-forward="true" selection-start-line="75" selection-start-column="5" selection-end-line="75" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainApp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+          <folding>
+            <element signature="e#631#647#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/gui/MainController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2261">
+          <caret line="147" column="21" selection-start-line="147" selection-start-column="21" selection-end-line="147" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/the_sinner/unn4m3d/klauncher/components/Game.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="25" column="47" selection-start-line="25" selection-start-column="47" selection-end-line="25" selection-end-column="47" />
         </state>
       </provider>
     </entry>
@@ -1030,6 +1057,7 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

@@ -23,6 +23,7 @@ class Game(val data : GameData) : JFrame(){
     @Throws(Exception::class)
     fun launch(gameDir : String, sett : Settings, callback : (String) -> Unit)
     {
+        System.setProperty("user.dir", gameDir)
         val bin = "$gameDir${File.separator}bin${File.separator}"
         callback("Launching in $gameDir")
         callback("Searching for JARs")
