@@ -187,10 +187,12 @@ public class MainController {
                 }
             });
 
+            Platform.runLater(() -> loginButton.setDisable(false));
             String text = api.news();
             Platform.runLater(() -> newsView.getEngine().loadContent(text));
 
             Platform.runLater(() -> statusLabel.setText("Готово!"));
+
 
         }).start();
     }
@@ -230,6 +232,7 @@ public class MainController {
             ShortServerData serv = servers.get(serverBox.getSelectionModel().getSelectedIndex());
             UpdaterController ctrl = loader.getController();
             ctrl.setData(data,serv.getShortName(),serv.getVersion());
+            ctrl.setApi(api);
             Stage stage = new Stage();
             stage.setTitle("KLauncher");
             stage.setScene(new Scene(root));

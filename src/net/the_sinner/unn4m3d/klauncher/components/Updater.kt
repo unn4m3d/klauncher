@@ -1,5 +1,6 @@
 package net.the_sinner.unn4m3d.klauncher.components
 
+import javafx.application.Platform
 import net.the_sinner.unn4m3d.filecheck.FileChecker
 import net.the_sinner.unn4m3d.filecheck.FileState
 import net.the_sinner.unn4m3d.filecheck.State
@@ -18,7 +19,10 @@ import java.io.FileInputStream
 
 fun downloadFile(dir : File, upDir : String, name : String, cb : (Long,Long) -> Unit)
 {
-    val r = get("${Config.API_URL}/$upDir/${encodeRPath(name)}",stream = true)
+    val url = "${Config.API_URL}$upDir/${encodeRPath(name)}"
+    System.out.println("URL:$url")
+    System.out.flush()
+    val r = get(url,stream = true)
     val size = r.headers["Content-Length"].toString().toLong()
     //val size = r.raw.available().toLong()
     cb(0,size)

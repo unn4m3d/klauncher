@@ -62,7 +62,7 @@ fun Byte.toHex() : String
 }
 
 fun encodeRPath(path : String) = path.split("/").map{
-    URLEncoder.encode(it)
+    URLEncoder.encode(it, "UTF-8").replace("+", "%20")
 }.joinToString("/")
 
 fun ramSize() : Long

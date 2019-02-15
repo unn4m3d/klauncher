@@ -13,9 +13,10 @@ class FileChecker(val path : String, val files : Map<String,FileInfo>){
         callback(State.START,null,"Starting...")
         callback(State.START,null,"Ignore regex is /${ignore.pattern}/")
         val ftw = File(path).walkTopDown()
-        var _files = HashMap<String,String>()
+        var localFiles = HashMap<String,String>()
         for(file in ftw) {
             val name = file.absolutePath.replace(path, "")
+            val unixName = name.replace('\\', '/')
             /*if((ignore.toString().isEmpty() || !name.matches(ignore)) && !file.isDirectory) {
                 callback(State.LISTING, null, "Adding file $name")
                 _files[name] = file.absolutePath
@@ -27,14 +28,14 @@ class FileChecker(val path : String, val files : Map<String,FileInfo>){
             else {
                 if(ignore.pattern.isEmpty()) {
                     callback(State.LISTING, null, "Adding (E) file $name")
-                    _files[name] = file.absolutePath
+                    localFiles[unixName] = file.absolutePath
                 }
                 else if(ignore.matches(name))
                     callback(State.LISTING, null, "Skipping file $name")
                 else
                 {
                     callback(State.LISTING, null, "Adding file $name")
-                    _files[name] = file.absolutePath
+                    localFiles[unixName] = file.absolutePath
                 }
             }
         }
@@ -44,11 +45,11 @@ class FileChecker(val path : String, val files : Map<String,FileInfo>){
         for(pair in files) {
             try {
                 var s = "Success"
-                var cr = pair.value.check(_files[pair.key].toString()) {
+                var cr = pair.value.check(localFiles[pair.key].toString()) {
                     s = it
                 }
                 if(cr) {
-                    callback(State.SUCCESS,null,"File ${_files[pair.key]} passed")
+                    callback(State.SUCCESS,null,"File ${localFiles[pair.key]} passed")
                     result.add(FileResult(pair.key,FileState.PRESENT))
                 } else{
                     callback(State.FAILURE,null,s)
@@ -59,16 +60,14 @@ class FileChecker(val path : String, val files : Map<String,FileInfo>){
                 callback(State.EXCEPTION,e,e.message)
                 result.add(FileResult(pair.key,FileState.MISSING))
             } finally {
-                if(_files.containsKey(pair.key))
-                    _files.remove(pair.key)
+                if(localFiles.containsKey(pair.key))
+                    localFiles.remove(pair.key)
             }
         }
 
-        for(pair in _files) {
+        for(pair in localFiles) {
             /*if(ignore.toString().isEmpty() || !pair.key.matches(ignore) && !File(pair.value).isDirectory)*/
-            if(ignore.pattern.isEmpty() && !File(pair.value).isDirectory)
-                result.add(FileResult(pair.value,FileState.UNWANTED))
-            else if(!ignore.matches(pair.key) && !File(pair.value).isDirectory)
+            if( (ignore.pattern.isEmpty() || !ignore.matches(pair.key)) && !File(pair.value).isDirectory )
                 result.add(FileResult(pair.value,FileState.UNWANTED))
         }
 

@@ -23,6 +23,7 @@ public class MainApp extends Application {
         MainController controller = loader.<MainController>getController();
         primaryStage.setTitle("KLauncher");
         primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
         controller.postInitialize(primaryStage);
         //primaryStage.show();
     }
