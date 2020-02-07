@@ -26,17 +26,9 @@ class FileChecker(val path : String, val files : Map<String,FileInfo>){
             if(file.isDirectory)
                 callback(State.LISTING, null, "Skipping directory $name")
             else {
-                if(ignore.pattern.isEmpty()) {
-                    callback(State.LISTING, null, "Adding (E) file $name")
-                    localFiles[unixName] = file.absolutePath
-                }
-                else if(ignore.matches(name))
-                    callback(State.LISTING, null, "Skipping file $name")
-                else
-                {
-                    callback(State.LISTING, null, "Adding file $name")
-                    localFiles[unixName] = file.absolutePath
-                }
+                callback(State.LISTING, null, "Adding file $name")
+                localFiles[unixName] = file.absolutePath
+            
             }
         }
 
@@ -45,13 +37,20 @@ class FileChecker(val path : String, val files : Map<String,FileInfo>){
         for(pair in files) {
             try {
                 var s = "Success"
+
+                if(!localFiles.containsKey(pair.key)) {
+                    callback(State.FAILURE, null, "File ${pair.key} is missing")
+                    result.add(FileResult(pair.key, FileState.MISSING))
+                    continue
+                }
                 var cr = pair.value.check(localFiles[pair.key].toString()) {
                     s = it
                 }
-                if(cr) {
+                if(cr || ignore.matches(pair.key)) {
                     callback(State.SUCCESS,null,"File ${localFiles[pair.key]} passed")
                     result.add(FileResult(pair.key,FileState.PRESENT))
                 } else{
+
                     callback(State.FAILURE,null,s)
                     result.add(FileResult(pair.key,FileState.CORRUPT))
                 }

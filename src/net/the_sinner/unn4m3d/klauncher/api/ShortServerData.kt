@@ -10,3 +10,9 @@ data class ShortServerData(
         val ip : String,
         val port : Int
 )
+{
+    override fun toString() : String
+    {
+        return name
+    }
+}

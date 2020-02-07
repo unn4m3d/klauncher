@@ -36,7 +36,7 @@ public class DownloadController {
                 String path = apiInstance.launcher(UtilsKt.getPlatform());
                 UpdaterKt.downloadFile(
                         new File(Dummy.getPath()).getParentFile(),
-                        new File(path).getParent(),
+                        "",
                         new File(path).getName(), (d,t) -> {
                             Platform.runLater(() -> {
                                 progressBar.setProgress(((double)d)/t);

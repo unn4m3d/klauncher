@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<SplitPane id="pane" dividerPositions="0.7939698492462312" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="448.0" prefWidth="600.0" stylesheets="@bg.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.the_sinner.unn4m3d.klauncher.gui.MainController">
+<SplitPane id="pane" fx:id="pane" dividerPositions="0.7939698492462312" maxHeight="448" maxWidth="600" minHeight="448" minWidth="600" orientation="VERTICAL" prefHeight="448.0" prefWidth="600.0" stylesheets="@bg.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.the_sinner.unn4m3d.klauncher.gui.MainController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="598.0">
          <children>
@@ -36,10 +36,10 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
+                   <TextField fx:id="loginField" promptText="Логин" GridPane.columnIndex="1" />
                   <PasswordField fx:id="passwordField" promptText="Пароль" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="loginField" promptText="Логин" GridPane.columnIndex="1" />
                   <ComboBox fx:id="serverBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Button fx:id="loginButton" mnemonicParsing="false" onMouseClicked="#onLogin" text="Войти" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                  <Button fx:id="loginButton" mnemonicParsing="false"  text="Войти" GridPane.columnIndex="2" GridPane.halignment="RIGHT" onAction="#onAction" />
                   <Button fx:id="settingsButton" mnemonicParsing="false" onMouseClicked="#onSettings" text="Настройки" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                   <Label fx:id="statusLabel" text="Label" GridPane.rowIndex="2" />
                </children>

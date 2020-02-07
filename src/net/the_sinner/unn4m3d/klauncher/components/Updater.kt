@@ -12,6 +12,12 @@ import net.the_sinner.unn4m3d.klauncher.api.API
 import net.the_sinner.unn4m3d.klauncher.api.FilesData
 //import net.the_sinner.unn4m3d.klauncher.api.apiInstance
 import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.net.URL
+import java.net.URLConnection
+import java.util.zip.ZipEntry
+import kotlin.math.roundToInt
 
 /**
  * Created by unn4m3d on 16.12.16.
@@ -19,28 +25,50 @@ import java.io.FileInputStream
 
 fun downloadFile(dir : File, upDir : String, name : String, cb : (Long,Long) -> Unit)
 {
+    /* Download files over HTTP */
     val url = "${Config.API_URL}$upDir/${encodeRPath(name)}"
-    System.out.println("URL:$url")
-    System.out.flush()
-    val r = get(url,stream = true)
-    val size = r.headers["Content-Length"].toString().toLong()
-    //val size = r.raw.available().toLong()
-    cb(0,size)
-    val f = File(dir.absolutePath + name)
-    //println("[DOWNLOADING ${f.absolutePath} $size]")
-    f.parentFile.mkdirs()
-    if(f.exists()) f.delete()
-    f.createNewFile()
-    val str = r.raw
-    var downloaded = 0L
-    while(str.available() > 0)
-    {
-        val chk = str.readBytes(32768)
-        downloaded += chk.size
-        f.appendBytes(chk)
-        cb(downloaded,size)
-    }
+            .replace("https://", "http://")
 
+    /*/val r = get(url, stream = true, headers = mapOf("Accept-Encoding" to "identity"), allowRedirects = false)
+    val size = r.headers["Content-Length"].toString().toLong()
+    */
+    val f = File(dir.absolutePath + File.separator + name)
+
+    val conn = URL(url).openConnection()
+    val istr = conn.getInputStream()
+    val size = conn.getHeaderField("Content-Length").toString().toLong()
+
+    cb(0,size)
+
+    println("[DOWNLOADING ${f.absolutePath} $size]")
+
+    f.parentFile.mkdirs()
+    if(f.exists())
+        f.delete()
+    f.createNewFile()
+
+    //val str = r.raw
+    var downloaded = 0L
+    val fos = FileOutputStream(f)
+    val chunk = ByteArray(2048)
+    var read = 0
+    try {
+        while(true)
+        {
+            //fos.write(chunk, 0, chunk.size)
+
+            read = istr.read(chunk, 0, chunk.size)
+
+            if(read == -1) break
+
+            //f.appendBytes(chunk)
+            fos.write(chunk, 0, read);
+            downloaded += read
+            cb(downloaded, size)
+        }
+    } finally {
+        fos.close()
+    }
 }
 
 
@@ -99,7 +127,13 @@ fun downloadClient(apiInstance: API, dir : File, server : String, cb: (Level,Str
     {
         cb(Level.INFO,"Загрузка файла ${file.name}", null)
         downloadFile(dir,files.dir,file.name) { d : Long, t : Long ->
-            cb(Level.OFF,"Загрузка ${file.name} (${size(d)}/${size(t)} ${d/t.toFloat()*100}%)", null)
+            var percent = "NaN"
+            try {
+                percent = (d/t.toFloat()*100).roundToInt().toString()
+            } catch(e : Exception) {
+                e.printStackTrace()
+            }
+            cb(Level.OFF,"Загрузка ${file.name} (${size(d)}/${size(t)} $percent%)", null)
         }
     }
 }
@@ -128,12 +162,19 @@ fun downloadAssets(apiInstance: API, dir : File, cb: (Level,String,Exception?) -
             cb(Level.OFF,"Загрузка ${asset} (${size(d)}/${size(t)} ${d/t.toFloat()*100}%)", null)
         }
     }*/
-    downloadFile(dir.parentFile,File(assets).parent,File.separator + File(assets).name) { d: Long, t: Long ->
-        cb(Level.OFF,"Загрузка $assets (${size(d)}/${size(t)} ${d/t.toFloat()*100}%)", null)
+    downloadFile(dir.parentFile,File(assets).parent,File(assets).name) { d: Long, t: Long ->
+        var percent = "NaN"
+        try {
+            percent = (d/t.toFloat()*100).roundToInt().toString()
+        } catch(e : Exception) {
+            e.printStackTrace()
+        }
+        cb(Level.OFF,"Загрузка $assets (${size(d)}/${size(t)} $percent%)", null)
     }
-    unzip(FileInputStream(dir.parentFile.resolve("assets.zip")),dir){
-        cb(Level.INFO,"Unpacking asset #$it",null)
+    unzip(FileInputStream(dir.parentFile.resolve("assets.zip")),dir){ i : Int, ze : ZipEntry ->
+        cb(Level.INFO,"Unpacking asset #$i : ${ze.size} bytes",null)
     }
+    cb(Level.INFO, "Done unpacking", null)
 }
 
 fun launchUpdater(apiInstance: API, dir : File, server : String, assetsDir : File, forceUpd: Boolean, cb: (Level,String,Exception?) -> Unit) : Boolean

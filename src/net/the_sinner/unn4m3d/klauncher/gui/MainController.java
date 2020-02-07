@@ -4,6 +4,8 @@ import com.sun.webkit.WebPage;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import net.the_sinner.unn4m3d.klauncher.Config;
 import net.the_sinner.unn4m3d.klauncher.MainClassKt;
 import net.the_sinner.unn4m3d.klauncher.api.*;
@@ -28,12 +31,17 @@ import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.stream.Stream;
+
 import static net.the_sinner.unn4m3d.klauncher.components.JavaMapKt.javaMap;
 
 /**
  * Created by unn4m3d on 15.12.16.
  */
 public class MainController {
+    @FXML
+    private SplitPane pane;
+
     @FXML
     private TextField loginField;
 
@@ -44,7 +52,7 @@ public class MainController {
     private Label statusLabel;
 
     @FXML
-    private ComboBox<String> serverBox;
+    private ComboBox<ShortServerData> serverBox;
 
     @FXML
     private Button loginButton;
@@ -61,56 +69,34 @@ public class MainController {
     @FXML
     public void initialize()
     {
-        /*try {
-            if (
-                    MainClassKt.getConfig().getOpt("remember",false) &&
-                    MainClassKt.getConfig().getOpt("password", "") != "") {
-                try {
-                    passwordField.setText(
-                            Crypt.decrypt(
-                                    MainClassKt.getConfig().getOpt("password",""),
-                            UtilsKt.padRight(Config.PROTECTION_KEY,16,'-'))
-                    );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        serverBox.setCellFactory(new Callback<ListView<ShortServerData>, ListCell<ShortServerData>>()
+        {
+            @Override
+            public ListCell<ShortServerData> call(ListView<ShortServerData> shortServerDataListView)
+            {
+                return new ListCell<ShortServerData>(){
 
-                loginField.setText(MainClassKt.getConfig().<String>getOpt("username",""));
+                    {
+                        setContentDisplay(ContentDisplay.TEXT_ONLY);
+                    }
+
+                    @Override
+                    protected void updateItem(ShortServerData data, boolean empty)
+                    {
+                        super.updateItem(data, empty);
+                        if(empty || data == null)
+                        {
+                            setText("<empty>");
+                        }
+                        else
+                        {
+                            setText(data.getName());
+                        }
+                    }
+                };
             }
-
-            servers = api.servers();
-            System.out.println("Got " + servers.size() + " servers");
-            serverBox.setItems(FXCollections.observableList(javaMap(servers,(ShortServerData s) -> s.getName())));
-            System.out.println("Set servers");
-            serverBox.setValue(servers.get(0).getName());
-            newsView.getEngine().documentProperty().addListener((nv, o, n) -> {
-                try {
-                    Field f = newsView.getEngine().getClass().getDeclaredField("page");
-                    f.setAccessible(true);
-                    WebPage page = (WebPage)f.get(newsView.getEngine());
-                    page.setBackgroundColor(new Color(0,0,0,0).getRGB());
-                } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            });
-            Task task = new Task() {
-                @Override
-                protected Object call() throws Exception {
-                    String text = api.news();
-                    Platform.runLater(() -> newsView.getEngine().loadContent(text));
-                    return null;
-                }
-            };
-
-            new Thread(task).start();
-            statusLabel.setText("Готово");
-        } catch (APIException e) {
-            e.printStackTrace();
-            statusLabel.setText("[" + e.getErrorType().toUpperCase() + "] " + e.getError());
-            JOptionPane.showMessageDialog(null,e.getError(),e.getErrorType().toUpperCase(),0);
-        }*/
+        });
+        pane.resize(pane.getPrefWidth(), pane.getPrefHeight());
     }
 
     public void postInitialize(Stage stage)
@@ -129,9 +115,9 @@ public class MainController {
                         Platform.runLater(() -> {
                             try {
                                 passwordField.setText(
-                                    Crypt.decrypt(
+                                    Crypt.xorStr(
                                             MainClassKt.getConfig().getOpt("password", ""),
-                                            UtilsKt.padRight(Config.PROTECTION_KEY, 16, '-'))
+                                            Config.PROTECTION_KEY )
                                 );
                             } catch (Exception e) {
                                 setError(e.getMessage(), "PWD");
@@ -168,9 +154,18 @@ public class MainController {
 
             Platform.runLater(() -> {
                     this.serverBox.setItems(
-                        FXCollections.observableList(javaMap(servers, (ShortServerData s) -> s.getName()))
+                        FXCollections.observableList(servers)
                     );
-                    this.serverBox.setValue(servers.get(0).getName());
+                    String serverName = MainClassKt
+                            .getConfig()
+                            .<String>getOpt("server", null);
+                    Stream<ShortServerData> stream = servers.stream().filter(s -> s.getShortName().equals(serverName));
+
+                    ShortServerData data = stream.findFirst().orElse(null);
+                    if(serverName == null || data == null)
+                        this.serverBox.getSelectionModel().select(0);
+                    else
+                        this.serverBox.getSelectionModel().select(servers.indexOf(data));
                 }
             );
 
@@ -204,6 +199,16 @@ public class MainController {
 
     public void onLogin(MouseEvent evt)
     {
+        onLoginImpl(evt);
+    }
+
+    public void onAction(ActionEvent evt)
+    {
+        onLoginImpl(evt);
+    }
+
+    public void onLoginImpl(Event evt)
+    {
         //API api = new API(Config.API_URL);
         if(serverBox.getValue() == null)
         {
@@ -217,19 +222,23 @@ public class MainController {
             if(MainClassKt.getConfig().<Boolean>getOpt("remember",false))
             {
                 try {
-                    MainClassKt.getConfig().set("password",
-                            Crypt.encrypt(passwordField.getText(),
-                                    UtilsKt.padRight(Config.PROTECTION_KEY,16,'*')));
+                    MainClassKt.getConfig().set(
+                            "password",
+                            Crypt.xorStr(passwordField.getText(),Config.PROTECTION_KEY)
+                    );
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 MainClassKt.getConfig().set("username", loginField.getText());
+                MainClassKt.getConfig().set("server", serverBox.getValue().getShortName());
                 MainClassKt.getConfig().save();
             }
 
+
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("UpdaterForm.fxml"));
             Parent root = loader.load();
-            ShortServerData serv = servers.get(serverBox.getSelectionModel().getSelectedIndex());
+            ShortServerData serv = serverBox.getSelectionModel().getSelectedItem();
             UpdaterController ctrl = loader.getController();
             ctrl.setData(data,serv.getShortName(),serv.getVersion());
             ctrl.setApi(api);
@@ -261,6 +270,7 @@ public class MainController {
                         s.setScene(new Scene(root));
                         s.show();
                         ((Node)evt.getSource()).getScene().getWindow().hide();
+                        ((DownloadController)ldr.getController()).postInitialize(api);
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }

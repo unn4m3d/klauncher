@@ -37,7 +37,7 @@ fun encrypt(str : String, key : String) : String
     val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
     val iv = generateIV(cipher.blockSize)
     cipher.init(Cipher.ENCRYPT_MODE, generateKey(key), iv)
-    val enc = cipher.doFinal(str.toByteArray())
+    val enc = cipher.doFinal(str.toByteArray(Charset.defaultCharset()))
     return "${String(b64encode(iv.iv))}\$${String(b64encode(enc))}"
 }
 
@@ -52,7 +52,8 @@ fun decrypt(str : String, key : String) : String {
 
     val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
     cipher.init(Cipher.DECRYPT_MODE, generateKey(key), iv)
-    return String(cipher.doFinal(enc.toByteArray(Charset.forName("UTF-8"))))
+    val array = enc.toByteArray(Charset.defaultCharset())
+    return String(cipher.doFinal(array))
 }
 
 @JvmName("xorByte")

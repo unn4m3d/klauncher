@@ -5,6 +5,7 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.lang.management.ManagementFactory
 import java.net.URLEncoder
+import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 /**
@@ -78,7 +79,7 @@ fun ramSize() : Long
 
 fun padRight(s : String, i : Int, c : Char) = s.padEnd(i,c)
 
-fun unzip(str : InputStream, out : File, cb : (Int) -> Unit)
+fun unzip(str : InputStream, out : File, cb : (Int, ZipEntry) -> Unit)
 {
     out.mkdirs()
     val zis = ZipInputStream(str)
@@ -88,7 +89,7 @@ fun unzip(str : InputStream, out : File, cb : (Int) -> Unit)
         val buffer = ByteArray(1024)
         while (ze != null) {
             i++
-            cb(i)
+            cb(i, ze)
             val name = ze.name
             val newfile = out.resolve(name)
             newfile.parentFile.mkdirs()

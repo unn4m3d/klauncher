@@ -28,11 +28,13 @@ class Game(val data : GameData) : JFrame(){
         callback("Launching in $gameDir")
         callback("Searching for JARs")
 
+        (File(gameDir).parentFile.resolve("asm/ccl_modular")).mkdirs()
+
         val fw = File(gameDir).walkTopDown()
         var list = ArrayList<URL>()
 
         fw.iterator().forEach {
-            if (!it.isDirectory && it.name.endsWith(".jar") && !it.absolutePath.replace(gameDir,"").startsWith("/mods")) {
+            if (!it.isDirectory && it.name.endsWith(".jar") && !it.absolutePath.replace(gameDir,"").contains("mods")) {
                 list.add(it.toURI().toURL())
                 callback("Adding ${it.absolutePath}")
             }
@@ -56,7 +58,7 @@ class Game(val data : GameData) : JFrame(){
 
         val username = data.username
         val sessionId = data.sessionId
-        println("Decrypted sid")
+        callback("Decrypted sid")
         //println("SID ${sessionId}, ATK $atok")
 
         if(old) {
@@ -104,11 +106,14 @@ class Game(val data : GameData) : JFrame(){
 
             val jarpath = File(gameDir).resolve("versions").resolve(sett.version).absolutePath
 
+            val libpath = File(jarpath).resolve("natives").absolutePath
             System.setProperty("fml.ignoreInvalidMinecraftCertificates", "true")
             System.setProperty("fml.ignorePatchDiscrepancies", "true")
-            System.setProperty("org.lwjgl.librarypath", File(jarpath).resolve("natives").absolutePath)
-            System.setProperty("net.java.games.input.librarypath", File(jarpath).resolve("natives").absolutePath)
-            System.setProperty("java.library.path", File(jarpath).resolve("natives").absolutePath)
+            System.setProperty("org.lwjgl.librarypath", libpath)
+            System.setProperty("net.java.games.input.librarypath", libpath)
+            System.setProperty("java.library.path", libpath)
+            callback("Libdir : $libpath")
+            //System.setProperty("user.dir", gameDir)
 
             var params = ArrayList<String>()
             if(sett.fullscreen) {
@@ -155,7 +160,7 @@ class Game(val data : GameData) : JFrame(){
             params.add(gameDir)
             params.add("--assetsDir")
 
-            if(sett.version.replace(".","").toInt() < 173) {
+            if(sett.version.replace(Regex("[^0-9]"),"").toInt() < 173) {
                 params.add(File(sett.assets).resolve("assets/virtual/legacy").absolutePath)
             } else {
                 params.add(File(sett.assets).resolve("assets").absolutePath)

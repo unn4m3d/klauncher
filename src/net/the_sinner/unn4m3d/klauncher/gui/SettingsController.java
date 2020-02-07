@@ -12,7 +12,10 @@ import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import net.the_sinner.unn4m3d.klauncher.MainClassKt;
+import net.the_sinner.unn4m3d.klauncher.components.LauncherConfig;
 import net.the_sinner.unn4m3d.klauncher.components.UtilsKt;
+
+import javax.swing.*;
 
 /**
  * Created by unn4m3d on 18.12.16.
@@ -24,17 +27,22 @@ public class SettingsController {
     @FXML private CheckBox rememberPassword;
     @FXML private CheckBox forceUpdate;
     private Node parent;
+    private boolean memUpdated = false;
 
     @FXML
-    public void back(MouseEvent evt)
-    {
-        if(!rememberPassword.isSelected())
-        {
-            MainClassKt.getConfig().set("password","");
+    public void back(MouseEvent evt) {
+        if (!rememberPassword.isSelected()) {
+            MainClassKt.getConfig().set("password", "");
+        }
+
+        ((Stage) parent.getScene().getWindow()).show();
+        ((Stage) memSlider.getScene().getWindow()).close();
+        int value = (int)memSlider.getValue();
+        if (memUpdated) {
+            updateMemValue(value);
+            JOptionPane.showMessageDialog(null, "Значение выделенной памяти было обновлено. Перезапустите лаунчер для применения значения");
         }
         MainClassKt.getConfig().save();
-        ((Stage)parent.getScene().getWindow()).show();
-        ((Stage)memSlider.getScene().getWindow()).close();
     }
 
     public void setNode(Node n)
@@ -57,11 +65,15 @@ public class SettingsController {
     {
         updateMemValue(MainClassKt.getConfig().getOpt("memory",1024),false);
         memSlider.valueProperty().addListener((ObservableValue<? extends Number> ov, Number o, Number n) -> {
-            updateMemValue(n.intValue(),true);
+            memUpdated = true;
         });
         memSlider.setMin(512);
-        memSlider.setMax(UtilsKt.ramSize() / 1024 / 1024);
-        memSlider.setValue(MainClassKt.getConfig().getOpt("memory",1024));
+        memSlider.setMax(Integer.max((int)(UtilsKt.ramSize() / 1024 / 1024), 4096));
+        LauncherConfig cfg = MainClassKt.getConfig();
+        cfg.set("memory", 1024);
+        int value = cfg.getOpt("memory", 1024);
+        memSlider.setValue(value);
+
         rememberPassword.setSelected(MainClassKt.getConfig().<Boolean>getOpt("remember",false));
     }
 
