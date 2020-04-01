@@ -207,6 +207,12 @@ public class MainController {
         onLoginImpl(evt);
     }
 
+
+    public Scene getScene()
+    {
+        return loginField.getScene();
+    }
+
     public void onLoginImpl(Event evt)
     {
         //API api = new API(Config.API_URL);

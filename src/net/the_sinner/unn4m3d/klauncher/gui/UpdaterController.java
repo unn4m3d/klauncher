@@ -42,12 +42,19 @@ public class UpdaterController {
     private String server;
     private String version;
     private API api;
+    private MainController parent;
+
+    private final String FTD_PREFIX = "files_to_download: ";
+    private  int count = 0;
+    private int downloaded = 0;
 
     public void _initialize() {
         //logView.setCellFactory((ListView<LogMessage> lw) -> new LogMessageCell());
+        progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
         Task<Boolean> task = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
+
                 return UpdaterKt.launchUpdater(
                         api,
                         fileJoin(getAppData(), Config.APP_FOLDER + File.separator + server),
@@ -55,16 +62,23 @@ public class UpdaterController {
                         fileJoin(getAppData(), Config.APP_FOLDER + File.separator + "assets"),
                         MainClassKt.getForceUpdate(),
                         (l, m, e) -> {
-                            println(l, m, e);
+                            if(l == Level.OFF && m.startsWith(FTD_PREFIX)) {
+                                count = Integer.parseInt(m.substring(FTD_PREFIX.length()));
+                            } else if(l == Level.OFF && m.equals("inc_dl")) {
+                                downloaded++;
+                                if(count > 0) {
+                                    double progress = (double)downloaded / count;
+                                    Platform.runLater(() -> progressBar.setProgress(progress));
+
+                                }
+                            } else {
+
+                                println(l, m, e);
+                            }
                             return Unit.INSTANCE;
                         });
             }
         };
-
-        task.setOnRunning((e) -> {
-            progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
-        });
-
         task.setOnSucceeded((WorkerStateEvent e) -> {
             boolean value = task.getValue();
             if (value) {

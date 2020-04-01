@@ -10,6 +10,7 @@ import java.io.File
 import java.net.URL
 import java.util.*
 import javax.swing.JFrame
+import javax.swing.JOptionPane
 import kotlin.system.exitProcess
 
 /**
@@ -116,7 +117,7 @@ class Game(val data : GameData) : JFrame(){
             //System.setProperty("user.dir", gameDir)
 
             var params = ArrayList<String>()
-            if(sett.fullscreen) {
+            if (sett.fullscreen) {
                 params.add("--fullscreen")
                 params.add("true")
             } else {
@@ -145,7 +146,7 @@ class Game(val data : GameData) : JFrame(){
                 params.add("--assetIndex")
                 params.add(sett.version)
 
-            } catch(e : ClassNotFoundException) {
+            } catch (e: ClassNotFoundException) {
                 callback("Cannot detect mojang authlib agent")
                 params.add("--session")
                 params.add(sessionId)
@@ -160,7 +161,7 @@ class Game(val data : GameData) : JFrame(){
             params.add(gameDir)
             params.add("--assetsDir")
 
-            if(sett.version.replace(Regex("[^0-9]"),"").toInt() < 173) {
+            if (sett.version.replace(Regex("[^0-9]"), "").toInt() < 173) {
                 params.add(File(sett.assets).resolve("assets/virtual/legacy").absolutePath)
             } else {
                 params.add(File(sett.assets).resolve("assets").absolutePath)
@@ -189,13 +190,44 @@ class Game(val data : GameData) : JFrame(){
                 callback("FML Tweaker not found")
             }
 
-            callback("Loading...")
-            val start = cl.loadClass(if(tweaked){"net.minecraft.launchwrapper.Launch"}else{"net.minecraft.client.main.Main"})
+            try {
+                callback("Looking for new FML Tweaker...")
+                cl.loadClass("net.minecraftforge.fml.common.launcher.FMLTweaker")
+                params.add("--tweakClass")
+                params.add("net.minecraftforge.fml.common.launcher.FMLTweaker")
+                params.add("--versionType")
+                params.add("Forge")
+                callback("Detected new FML")
+                params.add("--userType")
+                params.add("legacy")
+                tweaked = true
+            } catch(e: ClassNotFoundException) {
+                callback("New FML Tweaker not found")
+            }
 
-            val main = start.getMethod("main",Array<String>(0){""}.javaClass)
+            callback("Loading...")
+            val start = cl.loadClass(if (tweaked) {
+                "net.minecraft.launchwrapper.Launch"
+            } else {
+                "net.minecraft.client.main.Main"
+            })
+
+            val main = start.getMethod("main", Array<String>(0) { "" }.javaClass)
             callback("!!! LAUNCHING !!!")
             println("PARAMS : ${params.joinToString()}")
-            main.invoke(null,params.toTypedArray())
+            val hook = ShutdownHook.getShutdownHook()
+            try {
+
+                Runtime.getRuntime().addShutdownHook(hook)
+                main.invoke(null, params.toTypedArray());
+            } catch (e: Exception) {
+                ShutdownHook.crashed = true;
+                e.printStackTrace()
+                JOptionPane.showMessageDialog(null, "Minecraft crashed. See launcher and client log for details", "Minecraft crashed", JOptionPane.ERROR_MESSAGE)
+
+            } finally {
+                Runtime.getRuntime().removeShutdownHook(hook)
+            }
         }
 
     }

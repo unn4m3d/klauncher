@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import kotlin.Unit;
 import net.the_sinner.unn4m3d.klauncher.Dummy;
+import net.the_sinner.unn4m3d.klauncher.PreloaderKt;
 import net.the_sinner.unn4m3d.klauncher.api.API;
 import net.the_sinner.unn4m3d.klauncher.components.UpdaterKt;
 import net.the_sinner.unn4m3d.klauncher.components.UtilsKt;
@@ -49,7 +50,7 @@ public class DownloadController {
                         });
 
 
-                List<String> params = new ArrayList<>();
+                /*List<String> params = new ArrayList<>();
                 params.add("java");
                 params.add("-jar");
                 params.add(Dummy.getPath());
@@ -57,7 +58,8 @@ public class DownloadController {
                 pb = pb.inheritIO();
                 pb.start();
                 System.exit(0);
-
+                */
+                PreloaderKt.main(new String[]{});
                 return true;
             }
         };

@@ -8,6 +8,7 @@ import net.the_sinner.unn4m3d.klauncher.Config
 import java.io.File
 import java.util.logging.Level
 import khttp.get
+import net.the_sinner.unn4m3d.filecheck.FileResult
 import net.the_sinner.unn4m3d.klauncher.api.API
 import net.the_sinner.unn4m3d.klauncher.api.FilesData
 //import net.the_sinner.unn4m3d.klauncher.api.apiInstance
@@ -22,6 +23,7 @@ import kotlin.math.roundToInt
 /**
  * Created by unn4m3d on 16.12.16.
  */
+
 
 fun downloadFile(dir : File, upDir : String, name : String, cb : (Long,Long) -> Unit)
 {
@@ -88,6 +90,7 @@ fun checkClient(apiInstance : API, dir : File, sn : String, cb : (Level,String,E
     }
 
     cb(Level.INFO,"Сравнение файлов завершено",null)
+    cb(Level.OFF, "files_to_download: ${list.stream().filter{fr : FileResult -> fr.state == FileState.MISSING || fr.state == FileState.CORRUPT}.count()}", null)
 
     for(file in list) {
         when(file.state)
@@ -122,6 +125,7 @@ fun downloadClient(apiInstance: API, dir : File, server : String, cb: (Level,Str
 {
     cb(Level.INFO,"Получение списка файлов",null)
     var files = apiInstance.files(server,true)
+    cb(Level.OFF, "files_to_download: ${files.fileinfo.size}", null)
     cb(Level.INFO,"Список файлов получен", null)
     for(file in files.fileinfo)
     {
@@ -135,6 +139,7 @@ fun downloadClient(apiInstance: API, dir : File, server : String, cb: (Level,Str
             }
             cb(Level.OFF,"Загрузка ${file.name} (${size(d)}/${size(t)} $percent%)", null)
         }
+        cb(Level.OFF, "inc_dl", null)
     }
 }
 

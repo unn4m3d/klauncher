@@ -34,12 +34,12 @@ public class SettingsController {
         if (!rememberPassword.isSelected()) {
             MainClassKt.getConfig().set("password", "");
         }
-
+        int value = (int)memSlider.getValue();
         ((Stage) parent.getScene().getWindow()).show();
         ((Stage) memSlider.getScene().getWindow()).close();
-        int value = (int)memSlider.getValue();
+
         if (memUpdated) {
-            updateMemValue(value);
+            updateMemValue(value, true);
             JOptionPane.showMessageDialog(null, "Значение выделенной памяти было обновлено. Перезапустите лаунчер для применения значения");
         }
         MainClassKt.getConfig().save();
@@ -66,11 +66,12 @@ public class SettingsController {
         updateMemValue(MainClassKt.getConfig().getOpt("memory",1024),false);
         memSlider.valueProperty().addListener((ObservableValue<? extends Number> ov, Number o, Number n) -> {
             memUpdated = true;
+            updateMemValue((int)memSlider.getValue(), false);
         });
-        memSlider.setMin(512);
-        memSlider.setMax(Integer.max((int)(UtilsKt.ramSize() / 1024 / 1024), 4096));
+        memSlider.setMin(1024);
+        int max = Integer.max((int)(UtilsKt.ramSize() / 1024 / 1024), 4096);
+        memSlider.setMax(max);
         LauncherConfig cfg = MainClassKt.getConfig();
-        cfg.set("memory", 1024);
         int value = cfg.getOpt("memory", 1024);
         memSlider.setValue(value);
 

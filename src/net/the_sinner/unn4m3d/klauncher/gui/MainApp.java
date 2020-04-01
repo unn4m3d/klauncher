@@ -9,10 +9,21 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainApp extends Application {
 
+    public static boolean crashed = false;
+    public static String log;
+
     public static void main(String[] args) {
+        int index = Arrays.asList(args).indexOf("--crashed ");
+        if(index != -1)
+        {
+            crashed = true;
+            log = args[index + 1];
+        }
         launch(args);
     }
 

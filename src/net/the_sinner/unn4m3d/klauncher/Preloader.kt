@@ -1,5 +1,6 @@
 package net.the_sinner.unn4m3d.klauncher
 
+import jdk.nashorn.internal.scripts.JO
 import net.the_sinner.unn4m3d.klauncher.components.getAppData
 import net.the_sinner.unn4m3d.klauncher.components.getPlatform
 import java.io.IOException
@@ -11,6 +12,10 @@ import kotlin.system.exitProcess
 /**
  * Created by unn4m3d on 17.12.16.
  */
+
+val folder = getAppData().resolve(Config.APP_FOLDER)
+val sdf = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss")
+val log = folder.resolve("launcher-${sdf.format(Date())}.log")
 
 fun old_main(args : Array<String>)
 {
@@ -29,6 +34,8 @@ fun old_main(args : Array<String>)
             "-XX:MaxPermSize=128m",
             "-Dfile.encoding=UTF-8")
 
+
+
     if(getPlatform().startsWith("osx"))
     {
         params.add("-Xdock:name=Minecraft")
@@ -39,21 +46,25 @@ fun old_main(args : Array<String>)
     params.add("-classpath")
     params.add(path)
     params.add(cname)
+    params.addAll(args)
 
     try {
         var pb = ProcessBuilder(params)
-        val folder = getAppData().resolve(Config.APP_FOLDER)
         if (!folder.exists())
             folder.mkdirs()
         pb.directory(folder)
         pb = pb.inheritIO()
         println(params)
 
-        val sdf = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss")
-        val log = folder.resolve("launcher-${sdf.format(Date())}.log")
         pb.redirectOutput(log)
-        pb.redirectError(log)
+        pb.redirectErrorStream(true)
         val proc = pb.start()
+        println("Waiting 10 sec to ensure child has been launched successfully")
+        Thread.sleep(10000)
+        if(!proc.isAlive)
+        {
+            JOptionPane.showMessageDialog(null, "Exit code : ${proc.exitValue()}. See log for details", "Error", JOptionPane.ERROR_MESSAGE)
+        }
     } catch(e : Exception) {
         e.printStackTrace()
         JOptionPane.showMessageDialog(null, "Exception", "${e.javaClass.name}: ${e.message}", JOptionPane.ERROR_MESSAGE)
